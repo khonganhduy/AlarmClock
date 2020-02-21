@@ -17,6 +17,5 @@ public class ClockActivity extends AppCompatActivity {
         timePicker = (TimePicker)findViewById(R.id.timepicker);
         alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
 
-
     }
 }
