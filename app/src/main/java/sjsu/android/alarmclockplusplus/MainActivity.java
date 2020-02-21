@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity{
     private int scoreTracker;
     private CountDownTimer timer;
 
+    private int counter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
