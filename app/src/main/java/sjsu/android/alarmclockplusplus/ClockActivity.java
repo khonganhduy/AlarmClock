@@ -1,21 +1,32 @@
 package sjsu.android.alarmclockplusplus;
 
-import android.app.AlarmManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.widget.TimePicker;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ClockActivity extends AppCompatActivity {
-    private AlarmManager alarmManager;
-    private TimePicker timePicker;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_clock);
-        timePicker = (TimePicker)findViewById(R.id.timepicker);
-        alarmManager = (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
 
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        // specify an adapter (see also next example
+        String[] myDataset = new String[]{"hello", "world", "yep", "test", "memes", "dank", "fill","dab", "jojo"};
+        mAdapter = new MyAdapter(myDataset);
+        recyclerView.setAdapter(mAdapter);
     }
 }
