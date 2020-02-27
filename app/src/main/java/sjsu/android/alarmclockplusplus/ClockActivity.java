@@ -1,11 +1,11 @@
 package sjsu.android.alarmclockplusplus;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 public class ClockActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -15,6 +15,7 @@ public class ClockActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_clock);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         // use this setting to improve performance if you know that changes

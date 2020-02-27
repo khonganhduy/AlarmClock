@@ -6,34 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     card_view:cardUseCompatPadding="true"
-    card_view:cardCornerRadius="20dp">
+    card_view:cardElevation="0dp"
+    card_view:cardPreventCornerOverlap="true"
+    card_view:cardBackgroundColor="?attr/bgColor">
 
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
-
+        android:layout_height="match_parent">
         <TextView
             android:id="@+id/textView7"
             android:layout_width="163dp"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:padding="15dp"
-            android:textSize="14pt" />
+            android:textSize="14pt"
+            android:textColor="?attr/textColor"
+            />
 
         <TextView
             android:id="@+id/textView8"
             android:layout_width="174dp"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:textSize="12pt"
-            android:text="TextView"
+            android:textSize="10pt"
+            android:text="M T W Th F S Su"
+            android:textColor="?attr/metaTextColor"
             />
 
         <Switch
             android:id="@+id/switch2"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
-
+            android:thumbTint="?attr/textColor"
             />
     </TableRow>
 </androidx.cardview.widget.CardView>

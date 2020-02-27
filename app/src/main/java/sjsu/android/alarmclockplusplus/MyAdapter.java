@@ -1,9 +1,11 @@
 package sjsu.android.alarmclockplusplus;
 
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,10 +43,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         LinearLayout layout = (LinearLayout)holder.cardView.getChildAt(0);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(view.getContext(), String.format("CLICKED %s", mDataset[position]), Toast.LENGTH_SHORT).show();
+            }
+        });
         TextView t = (TextView)layout.getChildAt(0);
         t.setText(mDataset[position]);
         //holder.cardView.setText(mDataset[position]);
