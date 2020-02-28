@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name="sjsu.android.alarmclockplusplus.ResultActivity"></activity>
+        <activity android:name="sjsu.android.alarmclockplusplus.AlarmActivity"></activity>
     </application>
 
 </manifest>

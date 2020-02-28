@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onFinish() {
-                switchIntent();
+                switchActivity();
             }
         };
         timer.start();
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity{
         //Log.d("TEST", "SINGLE TAP UP";
     }
 
-    private void switchIntent(){
+    private void switchActivity(){
         Intent myIntent = new Intent(this, ResultActivity.class);
         myIntent.putExtra("score", scoreTracker);
         this.startActivity(myIntent);

@@ -1,9 +1,9 @@
 package sjsu.android.alarmclockplusplus;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +56,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), String.format("CLICKED %s", mDataset[position]), Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(view.getContext(), AlarmActivity.class);
+                view.getContext().startActivity(myIntent);
+
             }
         });
         TextView dateDisplay = (TextView)holder.timeDisplay;
@@ -69,4 +72,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemCount() {
         return mDataset.length;
     }
+
 }

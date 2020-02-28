@@ -9,6 +9,6 @@ public class AlarmActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.DarkTheme);
-
+        setContentView(R.layout.activity_alarm);
     }
 }
