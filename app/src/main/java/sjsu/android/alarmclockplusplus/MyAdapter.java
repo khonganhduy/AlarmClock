@@ -19,9 +19,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public CardView cardView;
+        public TextView timeDisplay;
+        public TextView dateDisplay;
+
         public MyViewHolder(CardView v) {
             super(v);
             cardView = v;
+            timeDisplay = (TextView) v.findViewById(R.id.timeDisplay);
+            dateDisplay = (TextView) v.findViewById(R.id.dayDisplay);
         }
     }
 
@@ -46,16 +51,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        LinearLayout layout = (LinearLayout)holder.cardView.getChildAt(0);
-        layout.setOnClickListener(new View.OnClickListener() {
+        //LinearLayout layout = (LinearLayout)holder.cardView.getChildAt(0);
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), String.format("CLICKED %s", mDataset[position]), Toast.LENGTH_SHORT).show();
             }
         });
-        TextView t = (TextView)layout.getChildAt(0);
-        t.setText(mDataset[position]);
-        //holder.cardView.setText(mDataset[position]);
+        TextView dateDisplay = (TextView)holder.timeDisplay;
+        dateDisplay.setText(mDataset[position]);
+
 
     }
 
