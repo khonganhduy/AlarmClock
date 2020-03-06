@@ -20,10 +20,85 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RatingBar
-                android:id="@+id/ratingBar2"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                >
+
+                <ToggleButton
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:minWidth="45dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:textOff="@string/sunday"
+                    android:textOn="@string/sunday"
+                    />
+
+                <ToggleButton
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:minWidth="45dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:textOff="@string/monday"
+                    android:textOn="@string/monday" />
+
+                <ToggleButton
+                    android:id="@+id/button4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:minWidth="45dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:textOff="@string/tuesday"
+                    android:textOn="@string/tuesday" />
+
+                <ToggleButton
+                    android:id="@+id/button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:minWidth="45dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:textOff="@string/wednesday"
+                    android:textOn="@string/wednesday" />
+
+                <ToggleButton
+                    android:id="@+id/button6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:minWidth="45dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:textAllCaps="false"
+                    android:textOff="@string/thursday"
+                    android:textOn="@string/thursday"/>
+
+                <ToggleButton
+                    android:id="@+id/button7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:minWidth="45dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:textOff="@string/friday"
+                    android:textOn="@string/friday" />
+
+                <ToggleButton
+                    android:id="@+id/button8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="45dp"
+                    android:minWidth="45dp"
+                    android:layout_marginHorizontal="4dp"
+                    android:textAllCaps="false"
+                    android:textOff="@string/saturday"
+                    android:textOn="@string/saturday" />
+            </TableRow>
 
             <EditText
                 android:id="@+id/editText"
@@ -31,13 +106,12 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:hint="Description" />
+                android:hint="@string/alarm_hint" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/alarm_options"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>
