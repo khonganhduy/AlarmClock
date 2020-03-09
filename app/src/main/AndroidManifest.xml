@@ -9,15 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="sjsu.android.alarmclockplusplus.ClockActivity">
+        <activity android:name="sjsu.android.alarmclockplusplus.ClockActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="sjsu.android.alarmclockplusplus.ResultActivity"></activity>
-        <activity android:name="sjsu.android.alarmclockplusplus.AlarmActivity"></activity>
+        <activity android:name="sjsu.android.alarmclockplusplus.ResultActivity"
+            android:screenOrientation="portrait"
+            ></activity>
+        <activity android:name="sjsu.android.alarmclockplusplus.AlarmActivity"
+            android:screenOrientation="portrait"
+            ></activity>
     </application>
 
 </manifest>

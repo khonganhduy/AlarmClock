@@ -8,4 +8,9 @@
     <string name="thursday">Th</string>
     <string name="friday">F</string>
     <string name="saturday">Sa</string>
+    <string name="alarm_sound">Alarm Sound</string>
+    <string name="vibration">Vibration</string>
+    <string name="snooze">Snooze</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>
