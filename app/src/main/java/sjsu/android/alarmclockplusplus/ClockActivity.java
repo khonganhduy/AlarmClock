@@ -27,7 +27,7 @@ public class ClockActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         // specify an adapter (see also next example
         String[] myDataset = new String[]{"hello", "world", "yep", "test", "memes", "dank", "fill","dab", "jojo"};
-        mAdapter = new MyAdapter(myDataset);
+        mAdapter = new ClockActivityAdapter(myDataset);
         recyclerView.setAdapter(mAdapter);
     }
 }

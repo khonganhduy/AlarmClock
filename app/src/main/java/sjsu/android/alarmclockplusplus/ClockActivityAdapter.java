@@ -1,16 +1,16 @@
 package sjsu.android.alarmclockplusplus;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdapter.MyViewHolder> {
     private String[] mDataset;
 
     // Provide a reference to the views for each data item
@@ -31,14 +31,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(String[] myDataset) {
+    public ClockActivityAdapter(String[] myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                     int viewType) {
+    public ClockActivityAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                int viewType) {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_card_view, parent, false);
@@ -51,11 +51,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        //LinearLayout layout = (LinearLayout)holder.cardView.getChildAt(0);
+
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(view.getContext(), String.format("CLICKED %s", mDataset[position]), Toast.LENGTH_SHORT).show();
+                Intent myIntent = new Intent(view.getContext(), AlarmActivity.class);
+                view.getContext().startActivity(myIntent);
+
             }
         });
         TextView dateDisplay = (TextView)holder.timeDisplay;
@@ -69,4 +72,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemCount() {
         return mDataset.length;
     }
+
 }
