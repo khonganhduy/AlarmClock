@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,12 +23,14 @@ public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdap
         public CardView cardView;
         public TextView timeDisplay;
         public TextView dateDisplay;
+        public Switch mySwitch;
 
         public MyViewHolder(CardView v) {
             super(v);
             cardView = v;
             timeDisplay = (TextView) v.findViewById(R.id.timeDisplay);
             dateDisplay = (TextView) v.findViewById(R.id.dayDisplay);
+            mySwitch = (Switch) v.findViewById(R.id.onOffSwitch);
         }
     }
 
@@ -51,19 +55,34 @@ public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdap
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-
+        final String timeText = mDataset[position];
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(view.getContext(), String.format("CLICKED %s", mDataset[position]), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(view.getContext(), timeText, Toast.LENGTH_SHORT).show();
                 Intent myIntent = new Intent(view.getContext(), AlarmActivity.class);
+                myIntent.putExtra("time", timeText);
                 view.getContext().startActivity(myIntent);
 
             }
         });
+        holder.mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked){
+                    // TODO
+                    // Set alarm (if first alarm change top display to display first alarm)
+                }
+                else{
+                    // Cancel alarm
+                }
+            }
+        });
+        // Display for alarm management screen
         TextView dateDisplay = (TextView)holder.timeDisplay;
         dateDisplay.setText(mDataset[position]);
-
+        TextView daysDisplay = (TextView)holder.dateDisplay;
+        daysDisplay.setText("S M T W TH F Sa");
 
     }
 
