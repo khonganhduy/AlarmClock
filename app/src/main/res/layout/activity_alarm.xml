@@ -3,20 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
         <TimePicker
             android:id="@+id/time_picker"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:timePickerMode="spinner"></TimePicker>
+            android:timePickerMode="spinner"
+            android:numbersTextColor="?attr/textColor"
+            android:amPmTextColor="?attr/textColor"
+            android:numbersSelectorColor="?attr/textColor"
+            android:amPmBackgroundColor="?attr/textColor"
+            android:numbersBackgroundColor="?attr/textColor"
+            android:numbersInnerTextColor="?attr/textColor"
+            ></TimePicker>
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -28,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:padding="10dp"
                 android:orientation="vertical"
+                android:background="?attr/bgColor"
                 >
 
                 <TableRow
@@ -117,6 +127,7 @@
                     android:hint="@string/alarm_hint"
                     android:inputType="text"
                     android:layout_marginVertical="20dp"
+                    android:textColor="?attr/textColor"
                     />
 
                 <TableLayout
@@ -143,14 +154,16 @@
                                 android:layout_alignParentTop="true"
                                 android:gravity="center_vertical"
                                 android:text="@string/alarm_sound"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="?attr/textColor"/>
 
                             <TextView
                                 android:id="@+id/second_line1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/first_line1"
-                                android:text="TextView" />
+                                android:text="TextView"
+                                android:textColor="?attr/textColor"/>
 
                             <Switch
                                 android:id="@+id/switch1"
@@ -183,14 +196,16 @@
                                 android:layout_alignParentTop="true"
                                 android:gravity="center_vertical"
                                 android:text="@string/vibration"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="?attr/textColor"/>
 
                             <TextView
                                 android:id="@+id/second_line2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/first_line2"
-                                android:text="TextView" />
+                                android:text="TextView"
+                                android:textColor="?attr/textColor"/>
 
                             <Switch
                                 android:id="@+id/switch2"
@@ -222,14 +237,16 @@
                                 android:layout_alignParentTop="true"
                                 android:gravity="center_vertical"
                                 android:text="@string/snooze"
-                                android:textSize="16sp" />
+                                android:textSize="16sp"
+                                android:textColor="?attr/textColor"/>
 
                             <TextView
                                 android:id="@+id/second_line3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@id/first_line3"
-                                android:text="TextView" />
+                                android:text="TextView"
+                                android:textColor="?attr/textColor"/>
 
                             <Switch
                                 android:id="@+id/switch3"
@@ -257,7 +274,7 @@
         >
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -267,7 +284,7 @@
             />
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/saveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
