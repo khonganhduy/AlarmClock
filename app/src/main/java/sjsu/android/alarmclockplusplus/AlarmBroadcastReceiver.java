@@ -1,44 +1,27 @@
 package sjsu.android.alarmclockplusplus;
 
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.app.job.JobWorkItem;
+import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.legacy.content.WakefulBroadcastReceiver;
 
-import java.util.List;
-
-public class AlarmBroadcastReceiver extends JobScheduler {
-    @Override
-    public int schedule(@NonNull JobInfo jobInfo) {
-        return JobScheduler.RESULT_FAILURE;
-    }
+public class AlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 
     @Override
-    public int enqueue(@NonNull JobInfo jobInfo, @NonNull JobWorkItem jobWorkItem) {
-        return JobScheduler.RESULT_FAILURE;
-    }
-
-    @Override
-    public void cancel(int i) {
-
-    }
-
-    @Override
-    public void cancelAll() {
-
-    }
-
-    @NonNull
-    @Override
-    public List<JobInfo> getAllPendingJobs() {
-        return null;
-    }
-
-    @Nullable
-    @Override
-    public JobInfo getPendingJob(int i) {
-        return null;
+    public void onReceive(Context context, Intent intent) {
+        Uri alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        if(alarmUri == null){
+            alarmUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        }
+        Ringtone ringtone = RingtoneManager.getRingtone(context, alarmUri);
+        ringtone.play();
+        ComponentName comp = new ComponentName(context.getPackageName(), ClockActivity.class.getName());
+        startWakefulService(context, intent.setComponent(comp));
+        setResultCode(Activity.RESULT_OK);
     }
 }

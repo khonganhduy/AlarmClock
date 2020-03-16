@@ -6,11 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 
 public class ClockActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<String> myDataset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +30,24 @@ public class ClockActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         // specify an adapter (see also next example
-        String[] myStartingDataset = new String[]{"6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM"};
-        mAdapter = new ClockActivityAdapter(myStartingDataset);
+        myDataset = new ArrayList<String>(Arrays.asList("6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "4:25 PM"));
+        mAdapter = new ClockActivityAdapter(myDataset);
         recyclerView.setAdapter(mAdapter);
+        Bundle savedData = getIntent().getExtras();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        Bundle savedData = getIntent().getExtras();
+        if(getIntent() != null && savedData != null){
+            int position = savedData.getInt("position");
+            String time = savedData.getString("time");
+            modifyData(time, position);
+        }
+    }
+
+    public void modifyData(String item, int position){
+        myDataset.set(position, item);
+        mAdapter.notifyItemChanged(position);
     }
 }
