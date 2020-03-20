@@ -1,10 +1,11 @@
 package sjsu.android.alarmclockplusplus;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class AlarmActivity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,14 +24,16 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
         Bundle intentBundle = getIntent().getExtras();
         String timeText = intentBundle.getString("time");
+        final int position = intentBundle.getInt("position");
+        final TimePicker tp = (TimePicker) findViewById(R.id.time_picker);
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         try {
             Date date = dateFormat.parse(timeText);
-            TimePicker tp = (TimePicker) findViewById(R.id.time_picker);
             Calendar c = Calendar.getInstance();
             c.setTime(date);
-            tp.setHour(c.get(Calendar.HOUR));
+            tp.setHour(c.get(Calendar.HOUR_OF_DAY));
             tp.setMinute(c.get(Calendar.MINUTE));
+
         } catch (ParseException e) {
             // Do nothing, this exception does not affect the overall program
         }
@@ -46,8 +50,25 @@ public class AlarmActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // TODO Schedule alarm and save data to display on main activity
-                // Use AlarmManager + broadcaster/receivers(apis deprecated) -- new APIs JobScheduler and JobIntentService
+                String time;
+                String mins = Integer.toString(tp.getMinute());
+                if(tp.getMinute() < 10){
+                    mins = "0" + mins;
+                }
+                if(tp.getHour() > 12) {
+                    time = (tp.getHour() - 12) + ":" + mins + " PM";
+                }
+                else{
+                    if(tp.getHour() == 0) {
+                        time = "12:" + mins + " AM";
+                    }
+                    else{
+                        time = tp.getHour() + ":" + mins + " AM";
+                    }
+                }
                 Intent returnIntent = new Intent(view.getContext(), ClockActivity.class);
+                returnIntent.putExtra("time", time);
+                returnIntent.putExtra("position", position);
                 startActivity(returnIntent);
             }
         });
