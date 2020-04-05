@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class ClockActivity extends AppCompatActivity {
+public class AlarmListDisplayActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -30,8 +30,8 @@ public class ClockActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         // specify an adapter (see also next example
-        myDataset = new ArrayList<String>(Arrays.asList("6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "4:25 PM"));
-        mAdapter = new ClockActivityAdapter(myDataset);
+        myDataset = new ArrayList<String>(Arrays.asList("6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "2:15 PM"));
+        mAdapter = new AlarmListDisplayAdapter(myDataset);
         recyclerView.setAdapter(mAdapter);
         Bundle savedData = getIntent().getExtras();
     }

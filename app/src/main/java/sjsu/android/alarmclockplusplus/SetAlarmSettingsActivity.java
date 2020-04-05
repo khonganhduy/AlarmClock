@@ -2,10 +2,8 @@ package sjsu.android.alarmclockplusplus;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AlarmActivity extends AppCompatActivity {
+public class SetAlarmSettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +39,7 @@ public class AlarmActivity extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent returnIntent = new Intent(view.getContext(),ClockActivity.class);
+                Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
                 startActivity(returnIntent);
             }
         });
@@ -66,7 +64,7 @@ public class AlarmActivity extends AppCompatActivity {
                         time = tp.getHour() + ":" + mins + " AM";
                     }
                 }
-                Intent returnIntent = new Intent(view.getContext(), ClockActivity.class);
+                Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
                 returnIntent.putExtra("time", time);
                 returnIntent.putExtra("position", position);
                 startActivity(returnIntent);

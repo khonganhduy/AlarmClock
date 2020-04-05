@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity{
+public class GameActivity extends AppCompatActivity{
 
     private ImageView iView;
     private TextView tView;
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void switchActivity(){
-        Intent myIntent = new Intent(this, ResultActivity.class);
+        Intent myIntent = new Intent(this, GameResultActivity.class);
         myIntent.putExtra("score", scoreTracker);
         this.startActivity(myIntent);
     }
