@@ -77,7 +77,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity {
         soundSelector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(AlarmActivity.this, "Sound Selector Clicked",
+                Toast.makeText(SetAlarmSettingsActivity.this, "Sound Selector Clicked",
                         Toast.LENGTH_LONG).show();
                 Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
                 view.getContext().startActivity(soundSelectorIntent);
