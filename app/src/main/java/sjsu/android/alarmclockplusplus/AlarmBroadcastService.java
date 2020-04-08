@@ -25,7 +25,7 @@ public class AlarmBroadcastService extends JobIntentService {
     private void notification(String message){
         alarmNotifyManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
         PendingIntent pendIntent =
-                PendingIntent.getActivity(this, 0, new Intent(this, ClockActivity.class), 0);
+                PendingIntent.getActivity(this, 0, new Intent(this, AlarmListDisplayActivity.class), 0);
         NotificationCompat.Builder alarmBuilder = new NotificationCompat.Builder(this)
                 .setContentTitle(getString(R.string.app_name)).setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message)).setContentText(message);

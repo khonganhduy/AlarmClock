@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdapter.MyViewHolder> {
+public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDisplayAdapter.MyViewHolder> {
     private ArrayList<String> mDataset;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -45,7 +45,7 @@ public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdap
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ClockActivityAdapter(ArrayList<String> myDataset) {
+    public AlarmListDisplayAdapter(ArrayList<String> myDataset) {
         mDataset = myDataset;
     }
 
@@ -56,8 +56,8 @@ public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdap
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ClockActivityAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                int viewType) {
+    public AlarmListDisplayAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                   int viewType) {
         // create a new view
         CardView v = (CardView) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_card_view, parent, false);
@@ -75,7 +75,7 @@ public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdap
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(view.getContext(), AlarmActivity.class);
+                Intent myIntent = new Intent(view.getContext(), SetAlarmSettingsActivity.class);
                 myIntent.putExtra("time", timeText);
                 myIntent.putExtra("position", position);
                 view.getContext().startActivity(myIntent);
@@ -99,9 +99,10 @@ public class ClockActivityAdapter extends RecyclerView.Adapter<ClockActivityAdap
                     Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
                     receiverIntent.putExtra("notification",timeText);
                     vh.pendingIntent = PendingIntent.getBroadcast(compoundButton.getContext(), requestCode, receiverIntent, 0);
-                    vh.alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), vh.pendingIntent);
+                    vh.alarmManager.setExact(AlarmManager.RTC, calendar.getTimeInMillis(), vh.pendingIntent);
                 }
                 else{
+                    vh.pendingIntent.cancel();
                     vh.alarmManager.cancel(vh.pendingIntent);
                 }
             }

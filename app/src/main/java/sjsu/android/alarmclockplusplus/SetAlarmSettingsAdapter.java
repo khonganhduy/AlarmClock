@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AlarmActivityAdapter extends RecyclerView.Adapter<AlarmActivityAdapter.MyViewHolder> {
+public class SetAlarmSettingsAdapter extends RecyclerView.Adapter<SetAlarmSettingsAdapter.MyViewHolder> {
     private String[] mDataset;
 
     // Provide a reference to the views for each data item
@@ -29,14 +29,14 @@ public class AlarmActivityAdapter extends RecyclerView.Adapter<AlarmActivityAdap
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AlarmActivityAdapter(String[] myDataset) {
+    public SetAlarmSettingsAdapter(String[] myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public AlarmActivityAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                int viewType) {
+    public SetAlarmSettingsAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                   int viewType) {
         // create a new view
         View v = (View) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_row_layout, parent, false);
