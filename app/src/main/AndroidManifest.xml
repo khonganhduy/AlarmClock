@@ -25,6 +25,9 @@
         <activity android:name="sjsu.android.alarmclockplusplus.AlarmActivity"
             android:screenOrientation="portrait"
             ></activity>
+        <activity android:name="sjsu.android.alarmclockplusplus.SoundSelectorActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <service
             android:name=".AlarmBroadcastService"
             android:enabled="true"
@@ -34,5 +37,10 @@
             android:name=".AlarmBroadcastReceiver"
             ></receiver>
     </application>
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
 
 </manifest>

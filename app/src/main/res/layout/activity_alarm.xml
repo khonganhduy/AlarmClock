@@ -135,6 +135,7 @@
                     android:layout_height="wrap_content">
 
                     <TableRow
+                        android:id="@+id/sound_selector"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginVertical="10dp"

@@ -7,11 +7,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Clock;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -70,6 +72,17 @@ public class AlarmActivity extends AppCompatActivity {
                 returnIntent.putExtra("time", time);
                 returnIntent.putExtra("position", position);
                 startActivity(returnIntent);
+            }
+        });
+        //---------------------------------------------------
+        View soundSelector = (View) findViewById(R.id.sound_selector);
+        soundSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(AlarmActivity.this, "Sound Selector Clicked",
+                        Toast.LENGTH_LONG).show();
+                Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
+                view.getContext().startActivity(soundSelectorIntent);
             }
         });
     }
