@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         public TextView timeDisplay;
         public TextView dateDisplay;
         public Switch mySwitch;
+        public ImageButton deleteButton;
         public AlarmManager alarmManager;
         public PendingIntent pendingIntent;
 
@@ -40,6 +42,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             timeDisplay = (TextView) v.findViewById(R.id.timeDisplay);
             dateDisplay = (TextView) v.findViewById(R.id.dayDisplay);
             mySwitch = (Switch) v.findViewById(R.id.onOffSwitch);
+            deleteButton = (ImageButton) v.findViewById(R.id.deleteButton);
             alarmManager = (AlarmManager) v.getContext().getSystemService(Context.ALARM_SERVICE);
         }
     }
@@ -72,7 +75,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         // - replace the contents of the view with that element
         final String timeText = mDataset.get(position);
         final MyViewHolder vh = holder;
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
+        vh.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), SetAlarmSettingsActivity.class);
@@ -81,7 +84,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 view.getContext().startActivity(myIntent);
             }
         });
-        holder.mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        vh.mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
@@ -107,6 +110,12 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 }
             }
         });
+        vh.deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                delete(vh.getAdapterPosition());
+            }
+        });
         // Display for alarm management screen
         TextView dateDisplay = (TextView)holder.timeDisplay;
         dateDisplay.setText(mDataset.get(position));
@@ -121,4 +130,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         return mDataset.size();
     }
 
+    private void delete(int pos){
+        mDataset.remove(pos);
+        notifyItemRemoved(pos);
+    }
 }

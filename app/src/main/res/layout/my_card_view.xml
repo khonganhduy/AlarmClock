@@ -19,20 +19,19 @@
 
         <TextView
             android:id="@+id/timeDisplay"
-            android:layout_width="163dp"
+            android:layout_width="144dp"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:padding="15dp"
-            android:textSize="14pt"
             android:textColor="?attr/textColor"
-            />
+            android:textSize="12pt" />
 
         <TextView
             android:id="@+id/dayDisplay"
-            android:layout_width="174dp"
+            android:layout_width="164dp"
             android:layout_height="wrap_content"
             android:gravity="right"
-            android:textSize="10pt"
+            android:textSize="8pt"
             android:text="M T W Th F S Su"
             android:textColor="?attr/metaTextColor"
             />
@@ -42,6 +41,13 @@
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:thumbTint="?attr/textColor"
+            />
+        <ImageButton
+            android:id="@+id/deleteButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/minus_sign"
             />
     </TableRow>
 </androidx.cardview.widget.CardView>
