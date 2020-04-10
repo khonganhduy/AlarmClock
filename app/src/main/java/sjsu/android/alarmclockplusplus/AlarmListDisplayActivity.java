@@ -1,6 +1,8 @@
 package sjsu.android.alarmclockplusplus;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import java.util.Arrays;
 
 
 public class AlarmListDisplayActivity extends AppCompatActivity {
+    private TextView addAlarmView;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -29,11 +32,19 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        // specify an adapter (see also next example
+        // specify an adapter
         myDataset = new ArrayList<String>(Arrays.asList("6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "2:15 PM"));
         mAdapter = new AlarmListDisplayAdapter(myDataset);
         recyclerView.setAdapter(mAdapter);
         Bundle savedData = getIntent().getExtras();
+
+        addAlarmView = (TextView) findViewById(R.id.addAlarmButton);
+        addAlarmView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addAlarm("5:00 AM");
+            }
+        });
     }
 
     protected void onResume() {
@@ -46,8 +57,13 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         }
     }
 
-    public void modifyData(String item, int position){
+    private void modifyData(String item, int position){
         myDataset.set(position, item);
         mAdapter.notifyItemChanged(position);
+    }
+
+    private void addAlarm(String item){
+        myDataset.add(item);
+        mAdapter.notifyItemInserted(myDataset.size()-1);
     }
 }
