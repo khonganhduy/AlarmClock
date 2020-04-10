@@ -11,19 +11,19 @@ public class Alarm {
     @PrimaryKey
     public int alarmId;
 
-    @ColumnInfo(name="time")
+    @ColumnInfo(name = "time")
     public Calendar alarmTime;
 
-    @ColumnInfo(name="ringtone_path")
+    @ColumnInfo(name = "ringtone_path")
     public String ringtonePath;
 
-    @ColumnInfo(name="repeatable_days")
+    @ColumnInfo(name = "repeatable_days")
     public String repeatableDays;
 
-    @ColumnInfo(name="trigger_date")
+    @ColumnInfo(name = "trigger_date")
     public String triggerDate;
 
     @ColumnInfo(name = "snooze_mode")
     public boolean snoozeMode;
-
 }
+
