@@ -1,27 +1,29 @@
 package sjsu.android.alarmclockplusplus;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class SoundSelectorActivity extends AppCompatActivity {
     private static final int PERMISSION_REQUEST_CODE = 100;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<String> myDataset;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,17 +42,30 @@ public class SoundSelectorActivity extends AppCompatActivity {
             int count = 0;
 
             if(cur != null) {
+                myDataset = new ArrayList<String>();
                 count = cur.getCount();
-                String titles = "";
                 if(count > 0) {
                     while(cur.moveToNext()) {
-                        titles += cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE)) + "\n";
+                        myDataset.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE)));
                         // Add code to get more column here
 
                         // Save to your list here
                     }
                 }
                 cur.close();
+
+                recyclerView = (RecyclerView) findViewById(R.id.sound_selector_recycler);
+                // use this setting to improve performance if you know that changes
+                // in content do not change the layout size of the RecyclerView
+                recyclerView.setHasFixedSize(true);
+
+                // use a linear layout manager
+                layoutManager = new LinearLayoutManager(this);
+                recyclerView.setLayoutManager(layoutManager);
+                // specify an adapter (see also next example
+                mAdapter = new SoundSelectorAdapter(myDataset);
+                recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+                recyclerView.setAdapter(mAdapter);
             }
         }
         else {
