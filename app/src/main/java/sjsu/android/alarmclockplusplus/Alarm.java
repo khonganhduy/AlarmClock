@@ -30,7 +30,7 @@ public class Alarm {
         return alarmTime;
     }
     public void setAlarmTime(Calendar alarmTime){
-        this.alarmTime = alarmTime
+        this.alarmTime = alarmTime;
     }
 
     public String getRingtonePath(){
