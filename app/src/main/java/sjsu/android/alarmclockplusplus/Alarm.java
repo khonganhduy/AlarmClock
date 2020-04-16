@@ -10,10 +10,10 @@ import java.util.Calendar;
 public class Alarm {
     @PrimaryKey
     public int alarmId;
-
+/*
     @ColumnInfo(name = "time")
     public Calendar alarmTime;
-
+*/
     @ColumnInfo(name = "ringtone_path")
     public String ringtonePath;
 
@@ -26,13 +26,14 @@ public class Alarm {
     @ColumnInfo(name = "snooze_mode")
     public boolean snoozeMode;
 
+    /*
     public Calendar getAlarmTime(){
         return alarmTime;
     }
     public void setAlarmTime(Calendar alarmTime){
         this.alarmTime = alarmTime;
     }
-
+*/
     public String getRingtonePath(){
         return ringtonePath;
     }

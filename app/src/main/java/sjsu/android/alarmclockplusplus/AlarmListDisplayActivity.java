@@ -14,6 +14,7 @@ import java.util.Arrays;
 
 public class AlarmListDisplayActivity extends AppCompatActivity {
     private TextView addAlarmView;
+    private TextView textClock;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -38,6 +39,8 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         Bundle savedData = getIntent().getExtras();
 
+        textClock = (TextView)findViewById(R.id.textClock);
+
         addAlarmView = (TextView) findViewById(R.id.addAlarmButton);
         addAlarmView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +56,8 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         if(getIntent() != null && savedData != null){
             int position = savedData.getInt("position");
             String time = savedData.getString("time");
-            modifyData(time, position);
+            //modifyData(time, position);
+            textClock.setText(time);
         }
     }
 
