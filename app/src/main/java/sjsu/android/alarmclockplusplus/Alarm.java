@@ -1,39 +1,90 @@
 package sjsu.android.alarmclockplusplus;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-import java.util.Calendar;
 
-@Entity
+@Entity(tableName = "alarm_table")
 public class Alarm {
     @PrimaryKey
-    public int alarmId;
-/*
+    @NonNull
+    private int alarmId;
+
+    @NonNull
     @ColumnInfo(name = "time")
-    public Calendar alarmTime;
-*/
+    private String alarmTime;
+
     @ColumnInfo(name = "ringtone_path")
-    public String ringtonePath;
+    private String ringtonePath;
 
     @ColumnInfo(name = "repeatable_days")
-    public String repeatableDays;
+    private String repeatableDays;
 
     @ColumnInfo(name = "trigger_date")
-    public String triggerDate;
+    private String triggerDate;
 
+    @NonNull
     @ColumnInfo(name = "snooze_mode")
-    public boolean snoozeMode;
+    private boolean snoozeMode;
 
-    /*
-    public Calendar getAlarmTime(){
+    public Alarm(int alarmId, String alarmTime){
+        this.alarmId = alarmId;
+        this.alarmTime = alarmTime;
+        this.snoozeMode = false;
+    }
+
+    @Ignore
+    public Alarm(int alarmId, String alarmTime, boolean snoozeMode){
+        this.alarmId = alarmId;
+        this.alarmTime = alarmTime;
+        this.snoozeMode = snoozeMode;
+    }
+
+    @Ignore
+    public Alarm(int alarmId, String alarmTime, String triggerDate){
+        this.alarmId = alarmId;
+        this.alarmTime = alarmTime;
+        this.triggerDate = triggerDate;
+        this.snoozeMode = false;
+    }
+
+    @Ignore
+    public Alarm(int alarmId, String alarmTime, String ringtonePath, String triggerDate){
+        this.alarmId = alarmId;
+        this.alarmTime = alarmTime;
+        this.ringtonePath = ringtonePath;
+        this.triggerDate = triggerDate;
+        this.snoozeMode = false;
+    }
+
+    @Ignore
+    public Alarm(int alarmId, String alarmTime, String ringtonePath, String repeatableDays, String triggerDate, boolean snoozeMode){
+        this.alarmId = alarmId;
+        this.alarmTime = alarmTime;
+        this.ringtonePath = ringtonePath;
+        this.repeatableDays = repeatableDays;
+        this.triggerDate = triggerDate;
+        this.snoozeMode = snoozeMode;
+    }
+
+    public void setAlarmId(int alarmId){
+        this.alarmId = alarmId;
+    }
+
+    public int getAlarmId(){
+        return this.alarmId;
+    }
+
+    public String getAlarmTime(){
         return alarmTime;
     }
-    public void setAlarmTime(Calendar alarmTime){
+    public void setAlarmTime(String alarmTime){
         this.alarmTime = alarmTime;
     }
-*/
+
     public String getRingtonePath(){
         return ringtonePath;
     }

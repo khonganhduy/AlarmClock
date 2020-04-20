@@ -1,10 +1,57 @@
 package sjsu.android.alarmclockplusplus;
 
-import androidx.room.Database;
-import androidx.room.RoomDatabase;
+import android.content.Context;
 
-@Database(entities={Alarm.class}, version = 1)
+import androidx.annotation.NonNull;
+import androidx.room.Database;
+import androidx.room.Room;
+import androidx.room.RoomDatabase;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+@Database(entities={Alarm.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AlarmDAO alarmDao();
+
+    private static volatile AppDatabase INSTANCE;
+    private static final int NUMBER_OF_THREADS = 3;
+    static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
+    static AppDatabase getDatabase(final Context context) {
+        if (INSTANCE == null) {
+            synchronized (AppDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class, "alarm_database")
+                            .addCallback(dbCallback)
+                            .build();
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
+    private static RoomDatabase.Callback dbCallback = new RoomDatabase.Callback() {
+        @Override
+        public void onOpen(@NonNull SupportSQLiteDatabase db) {
+            super.onOpen(db);
+        }
+
+        public void onCreate(@NonNull SupportSQLiteDatabase db){
+            super.onCreate(db);
+            databaseWriteExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    int[] alarmId = {12321, 12322, 12323, 12324, 12325};
+                    String[] defaultAlarmTime = {"7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM"};
+                    AlarmDAO dao = INSTANCE.alarmDao();
+                    for(int i = 0; i < 5; i++) {
+                        Alarm alarm = new Alarm(alarmId[i], defaultAlarmTime[i]);
+                        dao.insertAlarm(alarm);
+                    }
+                }
+            });
+        }
+    };
 }
-//AppDatabase db = Room.databaseBuilder(getAppContext,AppDatabase.class,"database_name").build() to get ref to database

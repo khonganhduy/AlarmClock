@@ -17,12 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDisplayAdapter.MyViewHolder> {
-    private ArrayList<String> mDataset;
+    private List<Alarm> mDataset;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -48,10 +48,14 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AlarmListDisplayAdapter(ArrayList<String> myDataset) {
-        mDataset = myDataset;
+    public AlarmListDisplayAdapter(Context context) {
+
     }
 
+    public void setAlarms(List<Alarm> alarmList) {
+        mDataset = alarmList;
+        notifyDataSetChanged();
+    }
     //public void updateData(String data, int position){
       //  mDataset.set(position, data);
         //notifyItemChanged(position);
@@ -73,7 +77,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String timeText = mDataset.get(position);
+        final String timeText = mDataset.get(position).getAlarmTime();
         final MyViewHolder vh = holder;
         vh.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,8 +101,6 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 }
                 int requestCode = position;
                 if(isChecked){
-                    // TODO
-                    // Set alarm (if first alarm change top display to display first alarm)
                     Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
                     receiverIntent.putExtra("notification",timeText);
                     vh.pendingIntent = PendingIntent.getBroadcast(compoundButton.getContext(), requestCode, receiverIntent, 0);
@@ -118,7 +120,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         });
         // Display for alarm management screen
         TextView dateDisplay = (TextView)holder.timeDisplay;
-        dateDisplay.setText(mDataset.get(position));
+
+        dateDisplay.setText(mDataset.get(position).getAlarmTime());
         TextView daysDisplay = (TextView)holder.dateDisplay;
         daysDisplay.setText("S M T W TH F Sa");
 
@@ -127,7 +130,10 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataset.size();
+        if (mDataset != null) {
+            return mDataset.size();
+        }
+        return 0;
     }
 
     private void delete(int pos){
