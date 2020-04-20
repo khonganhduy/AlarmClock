@@ -4,21 +4,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 
 public class AlarmListDisplayActivity extends AppCompatActivity {
     private TextView addAlarmView;
     private TextView textClock;
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<String> myDataset;
+    private AlarmViewModel mViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,10 +35,18 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         // specify an adapter
-        myDataset = new ArrayList<String>(Arrays.asList("6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "2:15 PM"));
-        mAdapter = new AlarmListDisplayAdapter(myDataset);
+        final AlarmListDisplayAdapter mAdapter = new AlarmListDisplayAdapter(this);
         recyclerView.setAdapter(mAdapter);
-        Bundle savedData = getIntent().getExtras();
+
+        mViewModel = new AlarmViewModel(getApplication());
+
+        mViewModel.getAlarmList().observe(this, new Observer<List<Alarm>>(){
+            public void onChanged(@Nullable final List<Alarm> alarms) {
+                mAdapter.setAlarms(alarms);
+            }
+        });
+
+        //Bundle savedData = getIntent().getExtras();
 
         textClock = (TextView)findViewById(R.id.textClock);
 
@@ -45,7 +54,7 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         addAlarmView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addAlarm("5:00 AM");
+                mViewModel.insert(new Alarm((int)Math.round(Math.random() * 100000), "6:00 AM"));
             }
         });
     }
@@ -59,15 +68,5 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
             //modifyData(time, position);
             textClock.setText(time);
         }
-    }
-
-    private void modifyData(String item, int position){
-        myDataset.set(position, item);
-        mAdapter.notifyItemChanged(position);
-    }
-
-    private void addAlarm(String item){
-        myDataset.add(item);
-        mAdapter.notifyItemInserted(myDataset.size()-1);
     }
 }
