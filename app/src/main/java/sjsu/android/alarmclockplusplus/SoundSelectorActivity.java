@@ -31,6 +31,37 @@ public class SoundSelectorActivity extends AppCompatActivity {
 
 
         requestPermission();
+    }
+
+    private boolean checkPermission() {
+        int result = ContextCompat.checkSelfPermission(
+                SoundSelectorActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+        if (result == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestPermission() {
+        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (shouldShowRequestPermissionRationale(
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Explain to the user why we need to read the contacts
+            }
+
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    PERMISSION_REQUEST_CODE);
+
+            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
+            // app-defined int constant that should be quite unique
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (checkPermission()){
             Toast.makeText(SoundSelectorActivity.this, "has permission",
                     Toast.LENGTH_LONG).show();
@@ -68,41 +99,10 @@ public class SoundSelectorActivity extends AppCompatActivity {
             }
         }
         else {
-            Toast.makeText(SoundSelectorActivity.this, "does not have permission",
+            Toast.makeText(SoundSelectorActivity.this, "You do not have permission to access storage.",
                     Toast.LENGTH_LONG).show();
         }
-    }
-
-    private boolean checkPermission() {
-        int result = ContextCompat.checkSelfPermission(
-                SoundSelectorActivity.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-        if (result == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private void requestPermission() {
-        if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (shouldShowRequestPermissionRationale(
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Explain to the user why we need to read the contacts
-            }
-
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    PERMISSION_REQUEST_CODE);
-
-            // MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE is an
-            // app-defined int constant that should be quite unique
-        }
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
+        /*switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
                     Log.e("value", "Permission Granted, Now you can use local drive .");
@@ -110,6 +110,6 @@ public class SoundSelectorActivity extends AppCompatActivity {
                     Log.e("value", "Permission Denied, You cannot use local drive .");
                 }
                 break;
-        }
+        }*/
     }
 }

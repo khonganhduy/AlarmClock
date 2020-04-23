@@ -40,7 +40,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
         Vibrator vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-        vibrator.vibrate(2000);
+        long[] pattern = {0, 1000, 2000};
+        vibrator.vibrate(pattern, 3);
         Notification noti = new Notification.Builder(context)
                 .setContentTitle("Alarm is ON")
                 .setContentText("You set up the alarm").build();
@@ -50,5 +51,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         Ringtone r = RingtoneManager.getRingtone(context, notification);
         r.play();
+        Intent myIntent = new Intent(context, GameActivity.class);
+        context.startActivity(myIntent);
     }
 }
