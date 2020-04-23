@@ -11,8 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 
-
+/*
 public class AlarmBroadcastService extends JobIntentService {
+
     NotificationManager alarmNotifyManager;
     public AlarmBroadcastService(){
         super();
@@ -33,5 +34,7 @@ public class AlarmBroadcastService extends JobIntentService {
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message)).setContentText(message);
         alarmBuilder.setContentIntent(pendIntent);
         alarmNotifyManager.notify(1, alarmBuilder.build());
+
+
     }
-}
+}*/

@@ -29,8 +29,12 @@ public class SoundSelectorActivity extends AppCompatActivity {
         setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_sound_selector);
 
-
-        requestPermission();
+        if (!checkPermission()){
+            requestPermission();
+        }
+        else {
+            fillMusicList();
+        }
     }
 
     private boolean checkPermission() {
@@ -62,54 +66,50 @@ public class SoundSelectorActivity extends AppCompatActivity {
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+
         if (checkPermission()){
-            Toast.makeText(SoundSelectorActivity.this, "has permission",
-                    Toast.LENGTH_LONG).show();
-            Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-            String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0";
-            String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
-            Cursor cur = getApplicationContext().getContentResolver().query(uri, null, selection, null, sortOrder);
-            int count = 0;
-
-            if(cur != null) {
-                myDataset = new ArrayList<String>();
-                count = cur.getCount();
-                if(count > 0) {
-                    while(cur.moveToNext()) {
-                        myDataset.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE)));
-                        // Add code to get more column here
-
-                        // Save to your list here
-                    }
-                }
-                cur.close();
-
-                recyclerView = (RecyclerView) findViewById(R.id.sound_selector_recycler);
-                // use this setting to improve performance if you know that changes
-                // in content do not change the layout size of the RecyclerView
-                recyclerView.setHasFixedSize(true);
-
-                // use a linear layout manager
-                layoutManager = new LinearLayoutManager(this);
-                recyclerView.setLayoutManager(layoutManager);
-                // specify an adapter (see also next example
-                mAdapter = new SoundSelectorAdapter(myDataset);
-                recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-                recyclerView.setAdapter(mAdapter);
-            }
+            fillMusicList();
         }
         else {
             Toast.makeText(SoundSelectorActivity.this, "You do not have permission to access storage.",
                     Toast.LENGTH_LONG).show();
         }
-        /*switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
-                if (grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED) {
-                    Log.e("value", "Permission Granted, Now you can use local drive .");
-                } else {
-                    Log.e("value", "Permission Denied, You cannot use local drive .");
+    }
+
+    private void fillMusicList(){
+        Toast.makeText(SoundSelectorActivity.this, "has permission",
+                Toast.LENGTH_LONG).show();
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0";
+        String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";
+        Cursor cur = this.getContentResolver().query(uri, null, selection, null, sortOrder);
+        int count = 0;
+
+        if(cur != null) {
+            myDataset = new ArrayList<String>();
+            count = cur.getCount();
+            if(count > 0) {
+                while(cur.moveToNext()) {
+                    myDataset.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE)));
+                    // Add code to get more column here
+
+                    // Save to your list here
                 }
-                break;
-        }*/
+            }
+            cur.close();
+
+            recyclerView = (RecyclerView) findViewById(R.id.sound_selector_recycler);
+            // use this setting to improve performance if you know that changes
+            // in content do not change the layout size of the RecyclerView
+            recyclerView.setHasFixedSize(true);
+
+            // use a linear layout manager
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            // specify an adapter (see also next example
+            mAdapter = new SoundSelectorAdapter(myDataset);
+            recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+            recyclerView.setAdapter(mAdapter);
+        }
     }
 }

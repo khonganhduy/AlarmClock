@@ -19,6 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="sjsu.android.alarmclockplusplus.GameActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <activity android:name="sjsu.android.alarmclockplusplus.GameResultActivity"
             android:screenOrientation="portrait"
             ></activity>
@@ -28,11 +31,9 @@
         <activity android:name="sjsu.android.alarmclockplusplus.SoundSelectorActivity"
             android:screenOrientation="portrait"
             ></activity>
-        <service
-            android:name=".AlarmBroadcastService"
-            android:enabled="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            ></service>
+        <activity android:name="sjsu.android.alarmclockplusplus.SnoozeActivity"
+            android:screenOrientation="portrait"
+            ></activity>
         <receiver
             android:name=".AlarmBroadcastReceiver"
             ></receiver>

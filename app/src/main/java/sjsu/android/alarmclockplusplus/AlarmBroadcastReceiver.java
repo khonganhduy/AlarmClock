@@ -10,9 +10,15 @@ import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.PowerManager;
 import android.os.Vibrator;
+import android.os.VibrationEffect;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.legacy.content.WakefulBroadcastReceiver;
+
+import static android.os.VibrationEffect.createWaveform;
 
 /*
 public class AlarmBroadcastReceiver extends WakefulBroadcastReceiver {
@@ -39,19 +45,28 @@ public class AlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 public class AlarmBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
+        Log.d("DEBUG", "ALARM IS GOING OFF");
+        Toast.makeText(context, "ALARM IS GOING OFF", Toast.LENGTH_SHORT);
         Vibrator vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = {0, 1000, 2000};
-        vibrator.vibrate(pattern, 3);
+        // {number of millis before turning vibrator on, number of millis to keep vibrator on before turning off, number of millis vibrator is off before turning it on}
+        long[] pattern = {0, 2000, 2000};
+        // repeat is index of pattern
+        vibrator.vibrate(pattern, 0);
         Notification noti = new Notification.Builder(context)
                 .setContentTitle("Alarm is ON")
                 .setContentText("You set up the alarm").build();
+
 
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         noti.flags|= Notification.FLAG_AUTO_CANCEL;
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         Ringtone r = RingtoneManager.getRingtone(context, notification);
         r.play();
+
+
         Intent myIntent = new Intent(context, GameActivity.class);
+        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(myIntent);
+
     }
 }
