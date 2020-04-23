@@ -21,7 +21,15 @@ public class AlarmViewModel extends AndroidViewModel {
         return alarmList;
     }
 
+    Alarm queryByTime(String time){
+        return alarmRepository.queryByTime(time);
+    }
+
     void insert(Alarm alarm){
         alarmRepository.insert(alarm);
+    }
+
+    void delete(Alarm alarm){
+        alarmRepository.delete(alarm);
     }
 }

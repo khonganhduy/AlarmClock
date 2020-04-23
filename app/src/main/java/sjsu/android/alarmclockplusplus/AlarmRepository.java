@@ -28,4 +28,21 @@ public class AlarmRepository {
             }
         });
     }
+
+    void delete(final Alarm alarm){
+        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.deleteAlarm(alarm);
+            }
+        });
+    }
+
+    Alarm queryByTime(String alarmTime){
+        return dao.findByTime(alarmTime);
+    }
+
+    void update(int alarmId, String time, String path, String days, String date, boolean snooze){
+        dao.update(alarmId, time, path, days, date, snooze);
+    }
 }

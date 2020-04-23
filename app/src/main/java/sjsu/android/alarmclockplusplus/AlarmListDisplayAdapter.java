@@ -23,6 +23,7 @@ import java.util.List;
 
 public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDisplayAdapter.MyViewHolder> {
     private List<Alarm> mDataset;
+    private final AlarmViewModel mViewModel;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -48,18 +49,15 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public AlarmListDisplayAdapter(Context context) {
-
+    public AlarmListDisplayAdapter(Context context, AlarmViewModel avm) {
+        mViewModel = avm;
     }
 
+    // allows for UI to update
     public void setAlarms(List<Alarm> alarmList) {
         mDataset = alarmList;
         notifyDataSetChanged();
     }
-    //public void updateData(String data, int position){
-      //  mDataset.set(position, data);
-        //notifyItemChanged(position);
-    //}
 
     // Create new views (invoked by the layout manager)
     @Override
@@ -79,6 +77,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         // - replace the contents of the view with that element
         final String timeText = mDataset.get(position).getAlarmTime();
         final MyViewHolder vh = holder;
+        //Bind alarm to cardview
+        vh.cardView.setTag(mDataset.get(position));
         vh.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,15 +107,16 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                     vh.alarmManager.setExact(AlarmManager.RTC, calendar.getTimeInMillis(), vh.pendingIntent);
                 }
                 else{
-                    vh.pendingIntent.cancel();
                     vh.alarmManager.cancel(vh.pendingIntent);
+                    vh.pendingIntent.cancel();
                 }
             }
         });
         vh.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                delete(vh.getAdapterPosition());
+                vh.mySwitch.setChecked(false);
+                mViewModel.delete((Alarm)vh.cardView.getTag());
             }
         });
         // Display for alarm management screen
@@ -136,8 +137,4 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         return 0;
     }
 
-    private void delete(int pos){
-        mDataset.remove(pos);
-        notifyItemRemoved(pos);
-    }
 }

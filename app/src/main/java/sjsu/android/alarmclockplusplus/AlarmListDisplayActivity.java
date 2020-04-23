@@ -7,7 +7,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,22 +30,20 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
+        mViewModel = new AlarmViewModel(getApplication());
+
         // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         // specify an adapter
-        final AlarmListDisplayAdapter mAdapter = new AlarmListDisplayAdapter(this);
+        final AlarmListDisplayAdapter mAdapter = new AlarmListDisplayAdapter(this, mViewModel);
         recyclerView.setAdapter(mAdapter);
-
-        mViewModel = new AlarmViewModel(getApplication());
 
         mViewModel.getAlarmList().observe(this, new Observer<List<Alarm>>(){
             public void onChanged(@Nullable final List<Alarm> alarms) {
                 mAdapter.setAlarms(alarms);
             }
         });
-
-        //Bundle savedData = getIntent().getExtras();
 
         textClock = (TextView)findViewById(R.id.textClock);
 
@@ -65,7 +62,6 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         if(getIntent() != null && savedData != null){
             int position = savedData.getInt("position");
             String time = savedData.getString("time");
-            //modifyData(time, position);
             textClock.setText(time);
         }
     }
