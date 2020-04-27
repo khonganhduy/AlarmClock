@@ -67,6 +67,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 /*Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
                 startActivity(returnIntent);*/
                 setResult(RESULT_CANCELED);
+                finish();
             }
         });
         Button save = (Button) findViewById(R.id.saveButton);
