@@ -1,5 +1,6 @@
 package sjsu.android.alarmclockplusplus;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -12,13 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-
+// Main screen to display all existing alarms
 public class AlarmListDisplayActivity extends AppCompatActivity {
     private TextView addAlarmView;
     private TextView textClock;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private AlarmViewModel mViewModel;
+    public static final int ALARM_REQUEST_CODE = 9;
+    public static final String ALARM_ID = "id";
+    public static final String ALARM_TIME = "time";
+    public static final String ALARM_RING_PATH = "path";
+    public static final String ALARM_REPEAT_DAYS = "repeat";
+    public static final String ALARM_TRIGGER_DATE = "date";
+    public static final String ALARM_SNOOZE_MODE = "snooze";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,18 +60,32 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         addAlarmView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.insert(new Alarm((int)Math.round(Math.random() * 100000), "6:00 AM"));
+                mViewModel.insert(new Alarm((int)Math.round(Math.random() * 100000), "6:00 AM", null, "M T W Th F Sa Su", null, false));
             }
         });
     }
 
-    protected void onResume() {
+    /*protected void onResume() {
         super.onResume();
         Bundle savedData = getIntent().getExtras();
         if(getIntent() != null && savedData != null){
             int position = savedData.getInt("position");
             String time = savedData.getString("time");
             textClock.setText(time);
+        }
+    }*/
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null && requestCode == ALARM_REQUEST_CODE){
+            int id = data.getIntExtra(ALARM_ID,0);
+            String time = data.getStringExtra(ALARM_TIME);
+            String path = data.getStringExtra(ALARM_RING_PATH);
+            String repeat = data.getStringExtra(ALARM_REPEAT_DAYS);
+            String trigger = data.getStringExtra(ALARM_TRIGGER_DATE);
+            boolean snooze = data.getBooleanExtra(ALARM_SNOOZE_MODE,false);
+            mViewModel.update(id, time, path, repeat, trigger, snooze);
         }
     }
 }

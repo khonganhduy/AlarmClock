@@ -31,7 +31,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         setContentView(R.layout.activity_alarm);
         Bundle intentBundle = getIntent().getExtras();
         String timeText = intentBundle.getString("time");
-        final int position = intentBundle.getInt("position");
+        final int alarm_id = intentBundle.getInt("id");
 
         tp = (TimePicker) findViewById(R.id.time_picker);
 
@@ -50,8 +50,9 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
-                startActivity(returnIntent);
+                /*Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
+                startActivity(returnIntent);*/
+                setResult(RESULT_CANCELED);
             }
         });
         Button save = (Button) findViewById(R.id.saveButton);
@@ -79,10 +80,15 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                         time = tp.getHour() + ":" + mins + " AM";
                     }
                 }
-                Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
+                /*Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
                 returnIntent.putExtra("time", time);
                 returnIntent.putExtra("position", position);
-                startActivity(returnIntent);
+                startActivity(returnIntent);*/
+                Intent updateIntent = new Intent();
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm_id);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, time);
+                setResult(RESULT_OK, updateIntent);
+                finish();
             }
         });
         // Custom Sound Selector

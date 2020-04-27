@@ -9,6 +9,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
+// Interface used for the database to perform SQLite operations
 @Dao
 public interface AlarmDAO {
     @Query("SELECT * FROM alarm_table")   //get all alarms to list them in main screen
