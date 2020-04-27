@@ -22,6 +22,8 @@ import java.util.Date;
 public class SetAlarmSettingsActivity extends AppCompatActivity implements SnoozeDialogFragment.OnCompleteListener{
 
     private TimePicker tp;
+    private int snooze_time;
+    TextView snoozeTimeTextView;
 
 
     @Override
@@ -39,12 +41,14 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         String repeatable_days = intentBundle.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS);
         String trigger_date = intentBundle.getString(AlarmListDisplayActivity.ALARM_TRIGGER_DATE);
         boolean snooze_mode = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_SNOOZE_MODE);
-        int snooze_time = intentBundle.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME);
+        snooze_time = intentBundle.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME);
         String description = intentBundle.getString(AlarmListDisplayActivity.ALARM_DESC);
         boolean vibration_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION);
         boolean minigame_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME);
         boolean alarm_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_ON);
 
+        snoozeTimeTextView = (TextView) findViewById(R.id.second_line3);
+        snoozeTimeTextView.setText(String.valueOf(snooze_time) + " minutes");
 
 
         tp = (TimePicker) findViewById(R.id.time_picker);
@@ -67,6 +71,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 /*Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
                 startActivity(returnIntent);*/
                 setResult(RESULT_CANCELED);
+                finish();
             }
         });
         Button save = (Button) findViewById(R.id.saveButton);
@@ -97,6 +102,8 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 Intent updateIntent = new Intent();
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm_id);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, time);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snooze_time);
+                
                 setResult(RESULT_OK, updateIntent);
                 finish();
             }
@@ -134,8 +141,8 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
     // Return information from fragment
     @Override
     public void onComplete(int minutes){
-        TextView snoozeTime = (TextView) findViewById(R.id.second_line3);
-        snoozeTime.setText(String.valueOf(minutes) + " minutes");
+        snooze_time = minutes;
+        snoozeTimeTextView.setText(String.valueOf(minutes) + " minutes");
     }
 
     //------------------------------------------------------------------
