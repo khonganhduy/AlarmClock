@@ -7,15 +7,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Clock;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -23,8 +26,11 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
 
     private TimePicker tp;
     private int snooze_time;
-    TextView snoozeTimeTextView;
-
+    private boolean vibration_on, minigame_on;
+    private String description, ringtone_path, repeatable_days, trigger_date;
+    TextView snoozeTimeTextView, musicTextView;
+    EditText descriptionEditText;
+    Switch vibrationToggleSwitch, minigameToggleSwitch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,22 +43,39 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         // Also used to initially set all of the fields in settings!
         String timeText = intentBundle.getString(AlarmListDisplayActivity.ALARM_TIME);
         final int alarm_id = intentBundle.getInt(AlarmListDisplayActivity.ALARM_ID);
-        String ringtone_path = intentBundle.getString(AlarmListDisplayActivity.ALARM_RING_PATH);
-        String repeatable_days = intentBundle.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS);
-        String trigger_date = intentBundle.getString(AlarmListDisplayActivity.ALARM_TRIGGER_DATE);
-        boolean snooze_mode = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_SNOOZE_MODE);
+        ringtone_path = intentBundle.getString(AlarmListDisplayActivity.ALARM_RING_PATH);
+        repeatable_days = intentBundle.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS);
+        trigger_date = intentBundle.getString(AlarmListDisplayActivity.ALARM_TRIGGER_DATE);
+        final boolean snooze_mode = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_SNOOZE_MODE);
         snooze_time = intentBundle.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME);
-        String description = intentBundle.getString(AlarmListDisplayActivity.ALARM_DESC);
-        boolean vibration_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION);
-        boolean minigame_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME);
-        boolean alarm_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_ON);
+        description = intentBundle.getString(AlarmListDisplayActivity.ALARM_DESC);
+        vibration_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION);
+        minigame_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME);
+        final boolean alarm_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_ON);
 
-        snoozeTimeTextView = (TextView) findViewById(R.id.second_line3);
+        // Set description to previously entered description for alarm if it exists
+        descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
+        if(description != null){
+            descriptionEditText.setText(description);
+        }
+        // Set vibration toggle switch to on or off based on previous settings
+        vibrationToggleSwitch = (Switch) findViewById(R.id.vibrationToggle);
+        vibrationToggleSwitch.setChecked(vibration_on);
+        // Set mingame toggle switch to on or off based on previous settings
+        minigameToggleSwitch = (Switch) findViewById(R.id.minigameToggle);
+        minigameToggleSwitch.setChecked(minigame_on);
+        // Set music display to chosen song from previous settings
+        musicTextView = (TextView) findViewById(R.id.second_line1);
+        if(ringtone_path != null){
+            musicTextView.setText(ringtone_path);
+        }
+        // Set snooze time to previous selected value
+        snoozeTimeTextView = (TextView) findViewById(R.id.snoozeTimeTextView);
         snoozeTimeTextView.setText(String.valueOf(snooze_time) + " minutes");
 
 
         tp = (TimePicker) findViewById(R.id.time_picker);
-
+        // Set the time picker to display alarm's current time
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         try {
             Date date = dateFormat.parse(timeText);
@@ -64,6 +87,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         } catch (ParseException e) {
             // Do nothing, this exception does not affect the overall program
         }
+
         Button cancel = (Button) findViewById(R.id.cancelButton);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +103,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
             @Override
             public void onClick(View view) {
                 //----------------------------
-                setTimer(view);
+                //setTimer(view);
                 //---------------------------
 
                 String time;
@@ -99,10 +123,23 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                     }
                 }
 
+                ringtone_path = musicTextView.getText().toString();
+                //do repeatable days
+                //do trigger date
+                description = descriptionEditText.getText().toString();
+
                 Intent updateIntent = new Intent();
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm_id);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, time);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snooze_time);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, ringtone_path);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, repeatable_days);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_TRIGGER_DATE, trigger_date);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_MODE, snooze_mode);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_DESC, description);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, vibration_on);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, minigame_on);
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ON, alarm_on);
                 
                 setResult(RESULT_OK, updateIntent);
                 finish();
@@ -134,6 +171,20 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
                 view.getContext().startActivity(soundSelectorIntent);*/
 
+            }
+        });
+
+        vibrationToggleSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                vibration_on = b;
+            }
+        });
+
+        minigameToggleSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                minigame_on = b;
             }
         });
     }
