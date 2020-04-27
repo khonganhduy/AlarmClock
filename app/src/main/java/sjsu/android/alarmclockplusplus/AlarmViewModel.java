@@ -30,6 +30,10 @@ public class AlarmViewModel extends AndroidViewModel {
         alarmRepository.delete(alarm);
     }
 
+    void update(int id, boolean alarmOn){
+        alarmRepository.update(id, alarmOn);
+    }
+
     void update(int id, String time, String path, String days, String date, boolean snooze, String desc, int snooze_time, boolean vibration, boolean minigame, boolean alarmOn){
         alarmRepository.update(id, time, path, days, date, snooze, desc, snooze_time, vibration, minigame, alarmOn);
     }

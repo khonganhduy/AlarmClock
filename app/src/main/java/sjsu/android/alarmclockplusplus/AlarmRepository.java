@@ -39,6 +39,15 @@ public class AlarmRepository {
         });
     }
 
+    void update(final int alarmId, final boolean alarmOn){
+        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.update(alarmId, alarmOn);
+            }
+        });
+    }
+
     void update(final int alarmId, final String time, final String path, final String days, final String date, final boolean snooze,
                 final String desc, final int snooze_time, final boolean vibration, final boolean minigame, final boolean alarmOn){
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {

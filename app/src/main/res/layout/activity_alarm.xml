@@ -272,7 +272,7 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_below="@id/musicSelectorTextView"
-                                        android:text="Click here to select your music"
+                                        android:text="@string/music_default_text"
                                         android:textColor="?attr/textColor" />
 
 
@@ -280,6 +280,41 @@
 
                             </TableRow>
 
+                            <TableRow
+                                android:id="@+id/date_selector"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginVertical="10dp">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1">
+
+                                    <TextView
+                                        android:id="@+id/dateSelectorTextView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignWithParentIfMissing="true"
+                                        android:layout_alignParentLeft="true"
+                                        android:layout_alignParentTop="true"
+                                        android:gravity="center_vertical"
+                                        android:text="@string/date_display"
+                                        android:textColor="?attr/textColor"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/dateDisplayTextView"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_below="@id/dateSelectorTextView"
+                                        android:text="@string/date_message"
+                                        android:textColor="?attr/textColor" />
+
+
+                                </RelativeLayout>
+
+                            </TableRow>
 
                         </TableLayout>
 

@@ -1,6 +1,7 @@
 package sjsu.android.alarmclockplusplus;
 
 import android.app.AlarmManager;
+import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -28,7 +30,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
     private int snooze_time;
     private boolean vibration_on, minigame_on;
     private String description, ringtone_path, repeatable_days, trigger_date;
-    TextView snoozeTimeTextView, musicTextView;
+    TextView snoozeTimeTextView, musicTextView, dateTextView;
     EditText descriptionEditText;
     Switch vibrationToggleSwitch, minigameToggleSwitch;
 
@@ -72,6 +74,12 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         // Set snooze time to previous selected value
         snoozeTimeTextView = (TextView) findViewById(R.id.snoozeTimeTextView);
         snoozeTimeTextView.setText(String.valueOf(snooze_time) + " minutes");
+
+
+        final TextView dateTextView = (TextView) findViewById(R.id.dateDisplayTextView);
+        if(trigger_date != null){
+            dateTextView.setText(trigger_date);
+        }
 
 
         tp = (TimePicker) findViewById(R.id.time_picker);
@@ -122,10 +130,16 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                         time = tp.getHour() + ":" + mins + " AM";
                     }
                 }
-
-                ringtone_path = musicTextView.getText().toString();
-                //do repeatable days
-                //do trigger date
+                if(musicTextView.getText().toString() != getString(R.string.music_default_text)) {
+                    ringtone_path = musicTextView.getText().toString();
+                }
+                // Pull states from the Day buttons and save to repeatable days
+                // code here
+                // Trigger dates have more priority, thus overwrite repeatable days
+                if(dateTextView.getText().toString() != getString(R.string.date_message)){
+                    repeatable_days = null;
+                    trigger_date = dateTextView.getText().toString();
+                }
                 description = descriptionEditText.getText().toString();
 
                 Intent updateIntent = new Intent();
@@ -174,6 +188,31 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
             }
         });
 
+        // Area for date selection options to be displayed
+        View dateSelector = (View) findViewById(R.id.date_selector);
+        final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // MONTH STARTS AT 0 SO WE CHANGE IT TO MATCH NORMAL CONVENTION
+                int normalMonth = month + 1;
+                dateTextView.setText(normalMonth + "/" + day + "/" + year);
+            }
+        };
+        // Display the datePicker dialog when user clicks on the date area
+        dateSelector.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(SetAlarmSettingsActivity.this,
+                        android.R.style.Theme_DeviceDefault_Dialog_NoActionBar_MinWidth,
+                        dateSetListener,
+                        year, month, day);
+                dialog.show();
+            }
+        });
         vibrationToggleSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
