@@ -37,6 +37,8 @@ public class SnoozeActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent stopRingtone = new Intent(view.getContext(), AlarmRingService.class);
                 view.getContext().stopService(stopRingtone);
+                finish();
+                System.exit(0);
             }
         });
     }
