@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+// View model for the MVC design pattern
 public class AlarmViewModel extends AndroidViewModel {
     private AlarmRepository alarmRepository;
     private LiveData<List<Alarm>> alarmList;
@@ -32,4 +33,10 @@ public class AlarmViewModel extends AndroidViewModel {
     void delete(Alarm alarm){
         alarmRepository.delete(alarm);
     }
+
+    void update(int id, String time, String path, String days, String date, boolean snooze){
+        alarmRepository.update(id,time,path,days,date,snooze);
+    }
+
+
 }

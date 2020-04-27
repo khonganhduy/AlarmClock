@@ -1,6 +1,7 @@
 package sjsu.android.alarmclockplusplus;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -17,12 +18,15 @@ public class Alarm {
     @ColumnInfo(name = "time")
     private String alarmTime;
 
+    @Nullable
     @ColumnInfo(name = "ringtone_path")
     private String ringtonePath;
 
+    @Nullable
     @ColumnInfo(name = "repeatable_days")
     private String repeatableDays;
 
+    @Nullable
     @ColumnInfo(name = "trigger_date")
     private String triggerDate;
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+// Holds reference to alarm data access object to perform database operations
 public class AlarmRepository {
     private AlarmDAO dao;
     private LiveData<List<Alarm>> alarmList;
@@ -42,7 +43,12 @@ public class AlarmRepository {
         return dao.findByTime(alarmTime);
     }
 
-    void update(int alarmId, String time, String path, String days, String date, boolean snooze){
-        dao.update(alarmId, time, path, days, date, snooze);
+    void update(final int alarmId, final String time, final String path, final String days, final String date, final boolean snooze){
+        AppDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.update(alarmId, time, path, days, date, snooze);
+            }
+        });
     }
 }

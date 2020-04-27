@@ -11,6 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+// Class for the creation and return of the database object based on Room API standards
 @Database(entities={Alarm.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AlarmDAO alarmDao();

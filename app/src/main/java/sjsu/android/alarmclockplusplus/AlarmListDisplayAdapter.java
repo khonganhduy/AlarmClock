@@ -1,5 +1,6 @@
 package sjsu.android.alarmclockplusplus;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -24,6 +25,7 @@ import java.util.List;
 public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDisplayAdapter.MyViewHolder> {
     private List<Alarm> mDataset;
     private final AlarmViewModel mViewModel;
+    private final Context context;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -50,6 +52,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
 
     // Provide a suitable constructor (depends on the kind of dataset)
     public AlarmListDisplayAdapter(Context context, AlarmViewModel avm) {
+        this.context = context;
         mViewModel = avm;
     }
 
@@ -75,17 +78,19 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        final String timeText = mDataset.get(position).getAlarmTime();
+        final Alarm alarm = mDataset.get(position);
+        final String timeText = alarm.getAlarmTime();
         final MyViewHolder vh = holder;
+
         //Bind alarm to cardview
-        vh.cardView.setTag(mDataset.get(position));
+        vh.cardView.setTag(alarm);
         vh.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), SetAlarmSettingsActivity.class);
-                myIntent.putExtra("time", timeText);
-                myIntent.putExtra("position", position);
-                view.getContext().startActivity(myIntent);
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, timeText);
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
+                ((Activity) context).startActivityForResult(myIntent, AlarmListDisplayActivity.ALARM_REQUEST_CODE);
             }
         });
         vh.mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -124,8 +129,12 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
 
         dateDisplay.setText(mDataset.get(position).getAlarmTime());
         TextView daysDisplay = (TextView)holder.dateDisplay;
-        daysDisplay.setText("S M T W TH F Sa");
-
+        if(alarm.getRepeatableDays() == null){
+            daysDisplay.setText("M T W Th F Sa Su");
+        }
+        else {
+            daysDisplay.setText(alarm.getRepeatableDays());
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
