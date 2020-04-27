@@ -15,4 +15,7 @@
     <string name="snooze">Snooze</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="date_display">Date</string>
+    <string name="date_message">Click to set a specific date for alarm to trigger</string>
+    <string name="music_default_text">Click here to select your music</string>
 </resources>

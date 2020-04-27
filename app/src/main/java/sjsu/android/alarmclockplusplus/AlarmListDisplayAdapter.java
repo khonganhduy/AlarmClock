@@ -152,7 +152,12 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         TextView daysDisplay = (TextView)holder.dateDisplay; //MAYBE CHANGE THIS LATER...
 
         if(alarm.getRepeatableDays() == null){
-            daysDisplay.setText("M T W Th F Sa Su");
+            if(alarm.getTriggerDate() != null){
+                daysDisplay.setText(alarm.getTriggerDate());
+            }
+            else{
+                daysDisplay.setText("M T W Th F Sa Su");
+            }
         }
         else {
             daysDisplay.setText(alarm.getRepeatableDays());

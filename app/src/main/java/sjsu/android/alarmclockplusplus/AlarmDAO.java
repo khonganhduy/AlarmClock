@@ -27,6 +27,9 @@ public interface AlarmDAO {
     @Delete
     void deleteAlarm(Alarm alarm);      //delete an existing alarm given the object reference
 
+    @Query("UPDATE alarm_table SET alarm_on = (:alarmOn) WHERE alarmId = (:alarmId)")
+    void update(int alarmId, boolean alarmOn);
+
     @Query("UPDATE alarm_table SET time = (:alarmTime), ringtone_path = (:ring_path), repeatable_days = (:repeat_days), trigger_date = (:trig_date), snooze_mode = (:snooze), description = (:desc), snooze_time = (:snooze_time), vibration_on = (:vibration), minigame_on = (:minigame), alarm_on = (:alarmOn)  WHERE alarmId = (:alarmId)")
     void update(int alarmId, String alarmTime, String ring_path, String repeat_days, String trig_date, boolean snooze, String desc, int snooze_time, boolean vibration, boolean minigame, boolean alarmOn);
 
