@@ -201,6 +201,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         i.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, alarm.getRingtonePath());
         i.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, alarm.getSnoozeTime());
         i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
+        i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
+        i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
         //Log.d("DEBUG", alarm.getRingtonePath());
         Log.d("DEBUG", String.valueOf(alarm.getSnoozeTime()));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(v.getContext(), alarm.getAlarmId(), i, 0);

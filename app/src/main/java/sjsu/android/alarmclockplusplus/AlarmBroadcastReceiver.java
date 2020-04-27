@@ -76,17 +76,32 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         else{
             startIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
         }
+        startIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
         context.startService(startIntent);
 
 
         // Start game activity
+        if (intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME)){
+            Intent myIntent = new Intent(context, GameActivity.class);
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snoozeTime);
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
+            startIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(myIntent);
+        }
+        else {
+            Intent myIntent = new Intent(context, SnoozeActivity.class);
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snoozeTime);
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
+            startIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+            myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(myIntent);
+        }
 
-        Intent myIntent = new Intent(context, GameActivity.class);
-        myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snoozeTime);
-        myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
-        myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
-        myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(myIntent);
 
 
 
