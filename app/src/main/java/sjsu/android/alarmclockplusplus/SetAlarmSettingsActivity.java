@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -16,6 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.EditText;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
@@ -258,5 +260,15 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         PendingIntent pendingIntent = PendingIntent.getBroadcast(SetAlarmSettingsActivity.this, 24444, i, 0);
         Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_SHORT).show();
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            Log.d("DEBUG", "JOJO");
+            ringtone_path = data.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
+            musicTextView.setText(ringtone_path);
+        }
     }
 }
