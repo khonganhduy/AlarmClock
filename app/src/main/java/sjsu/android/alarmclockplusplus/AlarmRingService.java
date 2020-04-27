@@ -6,13 +6,16 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
@@ -24,6 +27,7 @@ public class AlarmRingService extends Service {
 
     private Ringtone ringtone;
     private Vibrator vibrator;
+    private MediaPlayer mediaPlayer;
 
     @Override
     public IBinder onBind(Intent intent)
@@ -34,7 +38,7 @@ public class AlarmRingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
-
+        mediaPlayer = new MediaPlayer();
         vibrator = (Vibrator)this.getSystemService(Context.VIBRATOR_SERVICE);
         // {number of millis before turning vibrator on, number of millis to keep vibrator on before turning off, number of millis vibrator is off before turning it on}
         long[] pattern = {0, 2000, 2000};
@@ -42,18 +46,29 @@ public class AlarmRingService extends Service {
         vibrator.vibrate(pattern, 0);
 
         Log.d("DEBUG", "Service started");
-        if (intent.getExtras().getString("ringtone-uri").equals("")){
+        if (intent.getExtras().getString(AlarmListDisplayActivity.ALARM_RING_PATH).equals("")){
             Log.d("DEBUG", "Empty string");
             Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             this.ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+            ringtone.play();
         }
         else {
             Log.d("DEBUG", "not empty string");
-            Uri ringtoneUri = Uri.parse(intent.getExtras().getString("ringtone-uri"));
-            this.ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
+            String path = intent.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
+            Uri uri = MediaStore.Audio.Media.getContentUriForPath(path);
+            try {
+                mediaPlayer.setDataSource(path);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+                mediaPlayer.setLooping(true);
+            }
+            catch (Exception e){
+                Toast.makeText(this, "Could not find music file", Toast.LENGTH_SHORT);
+                Log.d("DEBUG", "COULD NOT FIND MUSIC FILE");
+            }
+            //this.ringtone = RingtoneManager.getRingtone(this, uri);
         }
 
-        ringtone.play();
 
         return START_NOT_STICKY;
     }
@@ -61,8 +76,15 @@ public class AlarmRingService extends Service {
     @Override
     public void onDestroy()
     {
-        ringtone.stop();
-        vibrator.cancel();
+        if (mediaPlayer != null){
+            mediaPlayer.stop();
+        }
+        if (ringtone != null){
+            ringtone.stop();
+        }
+        if (vibrator != null){
+            vibrator.cancel();
+        }
 
     }
 }

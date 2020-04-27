@@ -33,7 +33,7 @@ public class GameActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        simulationView = new SimulationView(this);
+        simulationView = new SimulationView(this, this.getIntent().getExtras());
         simulationView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
         setContentView(simulationView);
         /*setContentView(R.layout.activity_main);

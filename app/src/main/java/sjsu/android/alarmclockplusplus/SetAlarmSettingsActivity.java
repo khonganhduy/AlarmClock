@@ -1,16 +1,19 @@
 package sjsu.android.alarmclockplusplus;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.ParseException;
@@ -23,7 +26,9 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
 
     private TimePicker tp;
     private int snooze_time;
+    private String ringtone_path;
     TextView snoozeTimeTextView;
+    TextView ringtonePathTextView;
 
 
     @Override
@@ -37,7 +42,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         // Also used to initially set all of the fields in settings!
         String timeText = intentBundle.getString(AlarmListDisplayActivity.ALARM_TIME);
         final int alarm_id = intentBundle.getInt(AlarmListDisplayActivity.ALARM_ID);
-        String ringtone_path = intentBundle.getString(AlarmListDisplayActivity.ALARM_RING_PATH);
+        ringtone_path = intentBundle.getString(AlarmListDisplayActivity.ALARM_RING_PATH);
         String repeatable_days = intentBundle.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS);
         String trigger_date = intentBundle.getString(AlarmListDisplayActivity.ALARM_TRIGGER_DATE);
         boolean snooze_mode = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_SNOOZE_MODE);
@@ -49,6 +54,8 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
 
         snoozeTimeTextView = (TextView) findViewById(R.id.second_line3);
         snoozeTimeTextView.setText(String.valueOf(snooze_time) + " minutes");
+
+        ringtonePathTextView = (TextView) findViewById(R.id.second_line1);
 
 
         tp = (TimePicker) findViewById(R.id.time_picker);
@@ -79,7 +86,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
             @Override
             public void onClick(View view) {
                 //----------------------------
-                setTimer(view);
+               // setTimer(view);
                 //---------------------------
 
                 String time;
@@ -103,7 +110,8 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm_id);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, time);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snooze_time);
-                
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, ringtone_path);
+
                 setResult(RESULT_OK, updateIntent);
                 finish();
             }
@@ -116,7 +124,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 Toast.makeText(SetAlarmSettingsActivity.this, "Sound Selector Clicked",
                         Toast.LENGTH_LONG).show();
                 Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
-                view.getContext().startActivity(soundSelectorIntent);
+                ((Activity) view.getContext()).startActivityForResult(soundSelectorIntent, 1);
             }
         });
 
@@ -142,11 +150,10 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
     @Override
     public void onComplete(int minutes){
         snooze_time = minutes;
-        snoozeTimeTextView.setText(String.valueOf(minutes) + " minutes");
+        snoozeTimeTextView.setText(String.valueOf(snooze_time) + " minutes");
     }
 
     //------------------------------------------------------------------
-    // CURRENTLY WORKING METHOD TO SET AN ALARM
     public void setTimer(View v){
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Date date = new Date();
@@ -168,5 +175,16 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         PendingIntent pendingIntent = PendingIntent.getBroadcast(SetAlarmSettingsActivity.this, 24444, i, 0);
         Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_SHORT).show();
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
+    }
+
+    // Return information from sound selector activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            Log.d("DEBUG", "JOJO");
+            ringtone_path = data.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
+            ringtonePathTextView.setText(ringtone_path);
+        }
     }
 }

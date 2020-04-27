@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -109,25 +111,29 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 // FIX LISTENER TO ACTIVATE/DEACTIVATE ALARM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-                Calendar calendar = Calendar.getInstance();
-                try{
-                    Date date = dateFormat.parse(timeText);
-                    calendar.setTime(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                int requestCode = alarm.getAlarmId();
-                if(isChecked){
-                    Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
+               // SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+                //Calendar calendar = Calendar.getInstance();
+                //try{
+                   // Date date = dateFormat.parse(timeText);
+                    //calendar.setTime(date);
+                    //int requestCode = alarm.getAlarmId();
+                    if(isChecked){
+                        setTimer(compoundButton, alarm);
+
+                    /*Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
                     receiverIntent.putExtra("notification",timeText);
                     vh.pendingIntent = PendingIntent.getBroadcast(compoundButton.getContext(), requestCode, receiverIntent, 0);
-                    vh.alarmManager.setExact(AlarmManager.RTC, calendar.getTimeInMillis(), vh.pendingIntent);
-                }
-                else{
-                    vh.alarmManager.cancel(vh.pendingIntent);
-                    vh.pendingIntent.cancel();
-                }
+                    vh.alarmManager.setExact(AlarmManager.RTC, calendar.getTimeInMillis(), vh.pendingIntent);*/
+                    }
+                    else{
+
+                        Intent i = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(compoundButton.getContext(), alarm.getAlarmId(), i, 0);
+                        pendingIntent.cancel();
+                    }
+               // } catch (ParseException e) {
+                   // e.printStackTrace();
+               // }
             }
         });
         //Delete alarm from management screen as well as database
@@ -160,6 +166,41 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             return mDataset.size();
         }
         return 0;
+    }
+
+    // CURRENTLY WORKING METHOD TO SET AN ALARM
+    public void setTimer(View v, Alarm alarm){
+
+        AlarmManager alarmManager = (AlarmManager) v.getContext().getSystemService(Context.ALARM_SERVICE);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        Calendar cal_alarm = Calendar.getInstance();
+        Calendar cal_now = Calendar.getInstance();
+        try{
+            Date newDate = dateFormat.parse(alarm.getAlarmTime());
+            Date date = new Date();
+
+            cal_now.setTime(date);
+            cal_alarm.setTime(date);
+
+            cal_alarm.set(Calendar.HOUR_OF_DAY, newDate.getHours());
+            cal_alarm.set(Calendar.MINUTE, newDate.getMinutes());
+            cal_alarm.set(Calendar.SECOND, 0);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (cal_alarm.before(cal_now)){
+            cal_alarm.add(Calendar.DATE, 1);
+        }
+
+        Intent i = new Intent(v.getContext(), AlarmBroadcastReceiver.class);
+        i.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, alarm.getRingtonePath());
+        i.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, alarm.getSnoozeTime());
+        i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
+        //Log.d("DEBUG", alarm.getRingtonePath());
+        Log.d("DEBUG", String.valueOf(alarm.getSnoozeTime()));
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(v.getContext(), alarm.getAlarmId(), i, 0);
+        Toast.makeText(v.getContext(), "Alarm set", Toast.LENGTH_SHORT).show();
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
     }
 
 }

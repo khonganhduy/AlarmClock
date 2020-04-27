@@ -1,5 +1,8 @@
 package sjsu.android.alarmclockplusplus;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +11,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import static android.app.Activity.RESULT_OK;
 
 public class SoundSelectorAdapter extends RecyclerView.Adapter<SoundSelectorAdapter.MyViewHolder>{
     private ArrayList<String> mDataset;
@@ -54,6 +59,17 @@ public class SoundSelectorAdapter extends RecyclerView.Adapter<SoundSelectorAdap
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.textview.setText(mDataset.get(position));
+        holder.textview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent updateIntent = new Intent();
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, mDataset.get(position));
+                Log.d("DEBUG", mDataset.get(position));
+                Activity activity = (Activity) view.getContext();
+                activity.setResult(RESULT_OK, updateIntent);
+                activity.finish();
+            }
+        });
 
     }
 

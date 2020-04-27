@@ -45,8 +45,10 @@ public class AlarmBroadcastReceiver extends WakefulBroadcastReceiver {
 public class AlarmBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent){
-        Log.d("DEBUG", "ALARM IS GOING OFF");
-        Toast.makeText(context, "ALARM IS GOING OFF", Toast.LENGTH_SHORT);
+        String filepath = intent.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
+        int snoozeTime = intent.getIntExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, 1);
+        //Log.d("DEBUG", filepath);
+        Log.d("DEBUG", String.valueOf(snoozeTime));
         /*
         Vibrator vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
         // {number of millis before turning vibrator on, number of millis to keep vibrator on before turning off, number of millis vibrator is off before turning it on}
@@ -68,13 +70,21 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         r.play();
         */
         Intent startIntent = new Intent(context, AlarmRingService.class);
-        startIntent.putExtra("ringtone-uri", "");
+        if (filepath == null){
+            startIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, "");
+        }
+        else{
+            startIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
+        }
         context.startService(startIntent);
 
 
         // Start game activity
 
         Intent myIntent = new Intent(context, GameActivity.class);
+        myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snoozeTime);
+        myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
+        myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(myIntent);
 

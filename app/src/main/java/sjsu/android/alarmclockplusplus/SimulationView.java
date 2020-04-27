@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -27,10 +28,14 @@ public class SimulationView extends View {
     private float velocityScale;
     private boolean readingInput;
     private Context context;
+    private Bundle myInput;
     private static int GOAL = 10;
 
-    public SimulationView(Context context) {
+    public SimulationView(Context context, Bundle myInput) {
         super(context);
+        this.context = context;
+        this.setLongClickable(true);
+        this.myInput = myInput;
         mDetector = new GestureDetectorCompat(context, new MyGestureListener());
         direction = Direction.getRandomDirection();
         WindowManager windowManger = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -41,10 +46,8 @@ public class SimulationView extends View {
         mVelocityY = 0;
         scoreTracker = 0;
         readingInput = true;
-        this.context = context;
         velocityScale = mDisplay.getHeight()/3000000.0f;
         timestamp = System.currentTimeMillis();
-        this.setLongClickable(true);
     }
 
     public boolean onTouchEvent(MotionEvent event){
@@ -122,6 +125,9 @@ public class SimulationView extends View {
                     readingInput = false;
                     if (scoreTracker >= GOAL){
                         Intent myIntent = new Intent(context, SnoozeActivity.class);
+                        myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME,  myInput.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME));
+                        myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH,  myInput.getString(AlarmListDisplayActivity.ALARM_RING_PATH));
+                        myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, myInput.getInt(AlarmListDisplayActivity.ALARM_ID));
                         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(myIntent);
                     }
