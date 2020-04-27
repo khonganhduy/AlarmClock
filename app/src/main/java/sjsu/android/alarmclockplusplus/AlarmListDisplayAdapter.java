@@ -39,7 +39,6 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         public Switch mySwitch;
         public ImageButton deleteButton;
         public AlarmManager alarmManager;
-        public PendingIntent pendingIntent;
 
         public MyViewHolder(CardView v) {
             super(v);
@@ -118,6 +117,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                     //calendar.setTime(date);
                     //int requestCode = alarm.getAlarmId();
                     if(isChecked){
+                        mViewModel.update(alarm.getAlarmId(), true);
                         setTimer(compoundButton, alarm);
 
                     /*Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
@@ -126,7 +126,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                     vh.alarmManager.setExact(AlarmManager.RTC, calendar.getTimeInMillis(), vh.pendingIntent);*/
                     }
                     else{
-
+                        mViewModel.update(alarm.getAlarmId(), false);
                         Intent i = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(compoundButton.getContext(), alarm.getAlarmId(), i, 0);
                         pendingIntent.cancel();
@@ -136,6 +136,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                // }
             }
         });
+        // Set alarm to off or on based on previous settings
+        vh.mySwitch.setChecked(alarm.isAlarm_on());
         //Delete alarm from management screen as well as database
         vh.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
