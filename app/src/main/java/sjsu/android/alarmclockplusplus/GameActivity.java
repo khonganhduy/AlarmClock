@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GestureDetectorCompat;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,11 +27,16 @@ public class GameActivity extends AppCompatActivity{
     private int scoreTracker;
     private CountDownTimer timer;
 
+    private SimulationView simulationView;
+
     private int counter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        simulationView = new SimulationView(this);
+        simulationView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+        setContentView(simulationView);
+        /*setContentView(R.layout.activity_main);
         scoreTracker = 0;
         randomGen = new Random();
         randomInt = randomGen.nextInt(4);
@@ -52,16 +59,18 @@ public class GameActivity extends AppCompatActivity{
                 switchActivity();
             }
         };
-        timer.start();
+        timer.start();*/
     }
-
+/*
     protected void onResume(){
         super.onResume();
         scoreTracker = 0;
         timer.cancel();
         timer.start();
     }
+    */
 
+/*
     public boolean onTouchEvent(MotionEvent event){
         this.mDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
@@ -135,6 +144,5 @@ public class GameActivity extends AppCompatActivity{
             Log.d(DEBUG_TAG, "Velocity X: " + velocityX + " Velocity Y: " + velocityY);
             return true;
         }
-    }
-
+    }*/
 }

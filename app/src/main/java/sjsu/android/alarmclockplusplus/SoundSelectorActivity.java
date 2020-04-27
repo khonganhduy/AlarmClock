@@ -90,7 +90,7 @@ public class SoundSelectorActivity extends AppCompatActivity {
             count = cur.getCount();
             if(count > 0) {
                 while(cur.moveToNext()) {
-                    myDataset.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE)));
+                    myDataset.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA)));
                     // Add code to get more column here
 
                     // Save to your list here

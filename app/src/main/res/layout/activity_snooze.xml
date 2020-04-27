@@ -14,12 +14,14 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/current_time"
+
+        <DigitalClock
+            android:id="@+id/editText2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="TextView" />
+            android:textSize="50dp"
+            android:inputType="time" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -29,12 +31,12 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/snooze_btn"
+            android:id="@+id/dismiss_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:padding="8pt"
-            android:text="Snooze"
+            android:text="Dismiss"
             android:textAllCaps="false"
             android:textSize="12pt"
             />

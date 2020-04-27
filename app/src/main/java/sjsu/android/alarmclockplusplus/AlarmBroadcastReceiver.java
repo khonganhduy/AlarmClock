@@ -47,11 +47,13 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent){
         Log.d("DEBUG", "ALARM IS GOING OFF");
         Toast.makeText(context, "ALARM IS GOING OFF", Toast.LENGTH_SHORT);
+        /*
         Vibrator vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
         // {number of millis before turning vibrator on, number of millis to keep vibrator on before turning off, number of millis vibrator is off before turning it on}
         long[] pattern = {0, 2000, 2000};
         // repeat is index of pattern
         vibrator.vibrate(pattern, 0);
+        */
         Notification noti = new Notification.Builder(context)
                 .setContentTitle("Alarm is ON")
                 .setContentText("You set up the alarm").build();
@@ -59,14 +61,24 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
 
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         noti.flags|= Notification.FLAG_AUTO_CANCEL;
+
+        /*
         Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
         Ringtone r = RingtoneManager.getRingtone(context, notification);
         r.play();
+        */
+        Intent startIntent = new Intent(context, AlarmRingService.class);
+        startIntent.putExtra("ringtone-uri", "");
+        context.startService(startIntent);
 
+
+        // Start game activity
 
         Intent myIntent = new Intent(context, GameActivity.class);
         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(myIntent);
+
+
 
     }
 }

@@ -21,6 +21,7 @@
         </activity>
         <activity android:name="sjsu.android.alarmclockplusplus.GameActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             ></activity>
         <activity android:name="sjsu.android.alarmclockplusplus.GameResultActivity"
             android:screenOrientation="portrait"
@@ -37,6 +38,7 @@
         <receiver
             android:name=".AlarmBroadcastReceiver"
             ></receiver>
+        <service android:name=".AlarmRingService"/>
     </application>
     <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
