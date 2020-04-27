@@ -34,6 +34,21 @@ public class Alarm {
     @ColumnInfo(name = "snooze_mode")
     private boolean snoozeMode;
 
+    @ColumnInfo(name = "snooze_time")
+    private int snoozeTime;
+
+    @ColumnInfo(name = "description")
+    private String description;
+
+    @ColumnInfo(name = "vibration_on")
+    private boolean vibration_on;
+
+    @ColumnInfo(name = "minigame_on")
+    private boolean minigame_on;
+
+    @ColumnInfo(name = "alarm_on")
+    private boolean alarm_on;
+
     public Alarm(int alarmId, String alarmTime){
         this.alarmId = alarmId;
         this.alarmTime = alarmTime;
@@ -65,19 +80,23 @@ public class Alarm {
     }
 
     @Ignore
-    public Alarm(int alarmId, String alarmTime, String ringtonePath, String repeatableDays, String triggerDate, boolean snoozeMode){
+    public Alarm(int alarmId, String alarmTime, String ringtonePath, String repeatableDays, String triggerDate, boolean snoozeMode, String description, int snoozeTime, boolean vibration_on, boolean minigame_on, boolean alarm_on){
         this.alarmId = alarmId;
         this.alarmTime = alarmTime;
         this.ringtonePath = ringtonePath;
         this.repeatableDays = repeatableDays;
         this.triggerDate = triggerDate;
         this.snoozeMode = snoozeMode;
+        this.description = description;
+        this.snoozeTime = snoozeTime;
+        this.vibration_on = vibration_on;
+        this.minigame_on = minigame_on;
+        this.alarm_on = alarm_on;
     }
 
     public void setAlarmId(int alarmId){
         this.alarmId = alarmId;
     }
-
     public int getAlarmId(){
         return this.alarmId;
     }
@@ -116,5 +135,20 @@ public class Alarm {
     public void setSnoozeMode(boolean snoozeMode){
         this.snoozeMode = snoozeMode;
     }
+
+    public int getSnoozeTime(){ return snoozeTime; }
+    public void setSnoozeTime(int snoozeTime){ this.snoozeTime = snoozeTime; }
+
+    public String getDescription(){ return description; }
+    public void setDescription(String desc){ this.description = desc; }
+
+    public boolean isVibration_on() { return vibration_on; }
+    public void setVibration_on(boolean mode){ vibration_on = mode; }
+
+    public boolean isMinigame_on() { return minigame_on; }
+    public void setMinigame_on(boolean mode) { minigame_on = mode; }
+
+    public boolean isAlarm_on() { return alarm_on; }
+    public void setAlarm_on(boolean mode) { alarm_on = mode; }
 }
 

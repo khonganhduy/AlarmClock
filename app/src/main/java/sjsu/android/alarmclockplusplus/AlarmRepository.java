@@ -39,15 +39,12 @@ public class AlarmRepository {
         });
     }
 
-    Alarm queryByTime(String alarmTime){
-        return dao.findByTime(alarmTime);
-    }
-
-    void update(final int alarmId, final String time, final String path, final String days, final String date, final boolean snooze){
+    void update(final int alarmId, final String time, final String path, final String days, final String date, final boolean snooze,
+                final String desc, final int snooze_time, final boolean vibration, final boolean minigame, final boolean alarmOn){
         AppDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.update(alarmId, time, path, days, date, snooze);
+                dao.update(alarmId, time, path, days, date, snooze, desc, snooze_time, vibration, minigame, alarmOn);
             }
         });
     }

@@ -84,18 +84,31 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
 
         //Bind alarm to cardview
         vh.cardView.setTag(alarm);
+        // Go to settings to update alarm settings
         vh.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(view.getContext(), SetAlarmSettingsActivity.class);
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, timeText);
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, alarm.getRingtonePath());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, alarm.getRepeatableDays());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_TRIGGER_DATE, alarm.getTriggerDate());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_MODE, alarm.isSnoozeMode());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, alarm.getSnoozeTime());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_DESC, alarm.getDescription());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_ON, alarm.isAlarm_on());
+
                 ((Activity) context).startActivityForResult(myIntent, AlarmListDisplayActivity.ALARM_REQUEST_CODE);
             }
         });
+        // Toggle on or off alarms
         vh.mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                // FIX LISTENER TO ACTIVATE/DEACTIVATE ALARM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
                 Calendar calendar = Calendar.getInstance();
                 try{
@@ -104,7 +117,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                int requestCode = position;
+                int requestCode = alarm.getAlarmId();
                 if(isChecked){
                     Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
                     receiverIntent.putExtra("notification",timeText);
@@ -117,6 +130,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 }
             }
         });
+        //Delete alarm from management screen as well as database
         vh.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,8 +141,10 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         // Display for alarm management screen
         TextView dateDisplay = (TextView)holder.timeDisplay;
 
-        dateDisplay.setText(mDataset.get(position).getAlarmTime());
-        TextView daysDisplay = (TextView)holder.dateDisplay;
+        dateDisplay.setText(alarm.getAlarmTime());
+
+        TextView daysDisplay = (TextView)holder.dateDisplay; //MAYBE CHANGE THIS LATER...
+
         if(alarm.getRepeatableDays() == null){
             daysDisplay.setText("M T W Th F Sa Su");
         }

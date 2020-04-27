@@ -30,8 +30,22 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_alarm);
         Bundle intentBundle = getIntent().getExtras();
-        String timeText = intentBundle.getString("time");
-        final int alarm_id = intentBundle.getInt("id");
+
+        // MAKE FINAL IF INSIDE A LISTENER
+        // Also used to initially set all of the fields in settings!
+        String timeText = intentBundle.getString(AlarmListDisplayActivity.ALARM_TIME);
+        final int alarm_id = intentBundle.getInt(AlarmListDisplayActivity.ALARM_ID);
+        String ringtone_path = intentBundle.getString(AlarmListDisplayActivity.ALARM_RING_PATH);
+        String repeatable_days = intentBundle.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS);
+        String trigger_date = intentBundle.getString(AlarmListDisplayActivity.ALARM_TRIGGER_DATE);
+        boolean snooze_mode = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_SNOOZE_MODE);
+        int snooze_time = intentBundle.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME);
+        String description = intentBundle.getString(AlarmListDisplayActivity.ALARM_DESC);
+        boolean vibration_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION);
+        boolean minigame_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME);
+        boolean alarm_on = intentBundle.getBoolean(AlarmListDisplayActivity.ALARM_ON);
+
+
 
         tp = (TimePicker) findViewById(R.id.time_picker);
 
@@ -56,14 +70,13 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
             }
         });
         Button save = (Button) findViewById(R.id.saveButton);
-        save.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() { // PULL DATA FROM THE SETTINGS VIEW TO UPDATE DATABASE (with updateIntent.putExtra(FIELD DEFINED IN ALARMLISTDISPLAYACTIVITY, VALUE))
             @Override
             public void onClick(View view) {
                 //----------------------------
                 setTimer(view);
                 //---------------------------
 
-                // TODO Schedule alarm and save data to display on main activity
                 String time;
                 String mins = Integer.toString(tp.getMinute());
                 if(tp.getMinute() < 10){
@@ -80,10 +93,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                         time = tp.getHour() + ":" + mins + " AM";
                     }
                 }
-                /*Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
-                returnIntent.putExtra("time", time);
-                returnIntent.putExtra("position", position);
-                startActivity(returnIntent);*/
+
                 Intent updateIntent = new Intent();
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm_id);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, time);

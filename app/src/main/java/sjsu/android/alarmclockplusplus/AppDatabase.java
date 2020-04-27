@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 // Class for the creation and return of the database object based on Room API standards
-@Database(entities={Alarm.class}, version = 1, exportSchema = false)
+@Database(entities={Alarm.class}, version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AlarmDAO alarmDao();
 
@@ -25,7 +25,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "alarm_database")
-                            .addCallback(dbCallback)
+                            .addCallback(dbCallback).fallbackToDestructiveMigration()
                             .build();
                 }
             }
@@ -48,7 +48,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     String[] defaultAlarmTime = {"7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM"};
                     AlarmDAO dao = INSTANCE.alarmDao();
                     for(int i = 0; i < 5; i++) {
-                        Alarm alarm = new Alarm(alarmId[i], defaultAlarmTime[i]);
+                        Alarm alarm = new Alarm(alarmId[i], defaultAlarmTime[i], null, "M T W Th F Sa Su",
+                                null, false, null,1, false, false, false);
                         dao.insertAlarm(alarm);
                     }
                 }

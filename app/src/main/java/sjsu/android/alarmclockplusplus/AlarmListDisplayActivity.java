@@ -26,8 +26,12 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
     public static final String ALARM_RING_PATH = "path";
     public static final String ALARM_REPEAT_DAYS = "repeat";
     public static final String ALARM_TRIGGER_DATE = "date";
-    public static final String ALARM_SNOOZE_MODE = "snooze";
-
+    public static final String ALARM_SNOOZE_MODE = "snooze_mode";
+    public static final String ALARM_SNOOZE_TIME = "snooze_time";
+    public static final String ALARM_DESC = "desc";
+    public static final String ALARM_VIBRATION = "vibration";
+    public static final String ALARM_MINIGAME = "minigame";
+    public static final String ALARM_ON = "alarmOn";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,8 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         addAlarmView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mViewModel.insert(new Alarm((int)Math.round(Math.random() * 100000), "6:00 AM", null, "M T W Th F Sa Su", null, false));
+                mViewModel.insert(new Alarm((int)Math.round(Math.random() * 100000), "6:00 AM",
+                        null, "M T W Th F Sa Su", null, false, null,1, false, false, false));
             }
         });
     }
@@ -85,7 +90,12 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
             String repeat = data.getStringExtra(ALARM_REPEAT_DAYS);
             String trigger = data.getStringExtra(ALARM_TRIGGER_DATE);
             boolean snooze = data.getBooleanExtra(ALARM_SNOOZE_MODE,false);
-            mViewModel.update(id, time, path, repeat, trigger, snooze);
+            String desc = data.getStringExtra(ALARM_DESC);
+            int snooze_time = data.getIntExtra(ALARM_SNOOZE_TIME,1);
+            boolean vibration = data.getBooleanExtra(ALARM_VIBRATION, false);
+            boolean minigame = data.getBooleanExtra(ALARM_MINIGAME, false);
+            boolean alarmOn = data.getBooleanExtra(ALARM_ON, false);
+            mViewModel.update(id, time, path, repeat, trigger, snooze, desc, snooze_time, vibration, minigame, alarmOn);
         }
     }
 }
