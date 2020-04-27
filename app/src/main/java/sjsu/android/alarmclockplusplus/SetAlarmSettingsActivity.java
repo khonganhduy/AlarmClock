@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -18,7 +19,7 @@ import java.time.Clock;
 import java.util.Calendar;
 import java.util.Date;
 
-public class SetAlarmSettingsActivity extends AppCompatActivity {
+public class SetAlarmSettingsActivity extends AppCompatActivity implements SnoozeDialogFragment.OnCompleteListener{
 
     private TimePicker tp;
 
@@ -84,7 +85,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity {
                 startActivity(returnIntent);
             }
         });
-        //---------------------------------------------------
+        // Custom Sound Selector
         View soundSelector = (View) findViewById(R.id.sound_selector);
         soundSelector.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +96,30 @@ public class SetAlarmSettingsActivity extends AppCompatActivity {
                 view.getContext().startActivity(soundSelectorIntent);
             }
         });
+
+        // Custom snooze time
+        View snoozeSelector = (View) findViewById(R.id.snooze_selector);
+        snoozeSelector.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SnoozeDialogFragment dialogFragment = new SnoozeDialogFragment(view);
+                AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                dialogFragment.show(activity.getSupportFragmentManager(), "slider");
+                /*
+                Toast.makeText(SetAlarmSettingsActivity.this, "Sound Selector Clicked",
+                        Toast.LENGTH_LONG).show();
+                Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
+                view.getContext().startActivity(soundSelectorIntent);*/
+
+            }
+        });
+    }
+
+    // Return information from fragment
+    @Override
+    public void onComplete(int minutes){
+        TextView snoozeTime = (TextView) findViewById(R.id.second_line3);
+        snoozeTime.setText(String.valueOf(minutes) + " minutes");
     }
 
     //------------------------------------------------------------------
@@ -120,7 +145,5 @@ public class SetAlarmSettingsActivity extends AppCompatActivity {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(SetAlarmSettingsActivity.this, 24444, i, 0);
         Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_SHORT).show();
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
-
-
     }
 }

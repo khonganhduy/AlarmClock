@@ -31,6 +31,24 @@
         android:orientation="vertical">
 
         <Button
+            android:id="@+id/snooze_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="8pt"
+            android:text="Snooze"
+            android:textAllCaps="false"
+            android:textSize="12pt"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <Button
             android:id="@+id/dismiss_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -40,6 +58,7 @@
             android:textAllCaps="false"
             android:textSize="12pt"
             />
+
     </RelativeLayout>
 
 
