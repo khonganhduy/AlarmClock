@@ -296,7 +296,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         Log.d("DEBUG", String.valueOf(alarm.getSnoozeTime()));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId(), i, 0);
         Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show();
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
+        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
     }
 
     public void setRepeatTimer(Alarm alarm, int alarmSubID, int dayOfWeek){

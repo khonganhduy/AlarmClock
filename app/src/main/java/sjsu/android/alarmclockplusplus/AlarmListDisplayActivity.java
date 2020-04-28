@@ -123,45 +123,4 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         Log.d("DEBUG", "MAIN ACTIVITY DESTROYED");
         super.onDestroy();
     }
-
-    public void setTimer(String time, String triggerDate, String path, int snoozeTime, int alarmId, boolean vibration, boolean minigame){
-
-        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-        Calendar cal_alarm = Calendar.getInstance();
-        Calendar cal_now = Calendar.getInstance();
-        try{
-            Date newDate = dateFormat.parse(time);
-            Date date = new Date();
-            cal_now.setTime(date);
-            cal_alarm.setTime(date);
-            // To set an alarm on a specific date
-            if(triggerDate != null){
-                String[] dateParams = triggerDate.split("/");
-                cal_alarm.set(Calendar.MONTH, Integer.parseInt(dateParams[0]) - 1);
-                cal_alarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateParams[1]));
-                cal_alarm.set(Calendar.YEAR, Integer.parseInt(dateParams[2]));
-            }
-            cal_alarm.set(Calendar.HOUR_OF_DAY, newDate.getHours());
-            cal_alarm.set(Calendar.MINUTE, newDate.getMinutes());
-            cal_alarm.set(Calendar.SECOND, 0);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if (cal_alarm.before(cal_now)){
-            cal_alarm.add(Calendar.DATE, 1);
-        }
-
-        Intent i = new Intent(this, AlarmBroadcastReceiver.class);
-        i.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, path);
-        i.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snoozeTime);
-        i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarmId);
-        i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, vibration);
-        i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, minigame);
-        //Log.d("DEBUG", alarm.getRingtonePath());
-        Log.d("DEBUG", String.valueOf(snoozeTime));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, alarmId, i, 0);
-        Toast.makeText(this, "Alarm set", Toast.LENGTH_SHORT).show();
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
-    }
 }
