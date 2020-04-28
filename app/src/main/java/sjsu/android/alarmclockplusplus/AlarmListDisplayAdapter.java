@@ -28,6 +28,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     private List<Alarm> mDataset;
     private final AlarmViewModel mViewModel;
     private final Context context;
+    public int highlightedItemPosition;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -51,11 +52,11 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             alarmManager = (AlarmManager) v.getContext().getSystemService(Context.ALARM_SERVICE);
         }
     }
-
     // Provide a suitable constructor (depends on the kind of dataset)
     public AlarmListDisplayAdapter(Context context, AlarmViewModel avm) {
         this.context = context;
         mViewModel = avm;
+        this.highlightedItemPosition = -1;
     }
 
     // allows for UI to update
@@ -102,6 +103,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_ON, alarm.isAlarm_on());
+                myIntent.putExtra(AlarmListDisplayActivity.ALARM_POSITION, position);
+                Log.d("DEBUG", String.valueOf(position));
 
                 ((Activity) context).startActivityForResult(myIntent, AlarmListDisplayActivity.ALARM_REQUEST_CODE);
             }
@@ -230,6 +233,19 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         else {
             daysDisplay.setText(alarm.getRepeatableDays());
         }
+        //-----------------------
+        if (highlightedItemPosition == position){
+            if (holder.mySwitch.isChecked()){
+                holder.mySwitch.setChecked(false);
+                holder.mySwitch.setChecked(true);
+            }
+            else{
+                holder.mySwitch.setChecked(true);
+            }
+            highlightedItemPosition = -1;
+        }
+
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -313,7 +329,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
         i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmSubID, i, 0);
-        Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show();
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
     }
 }

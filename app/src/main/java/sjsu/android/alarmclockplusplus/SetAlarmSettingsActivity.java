@@ -44,7 +44,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         super.onCreate(savedInstanceState);
         setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_alarm);
-        Bundle intentBundle = getIntent().getExtras();
+        final Bundle intentBundle = getIntent().getExtras();
         daysButtonsActivated = new boolean[7];
         // MAKE FINAL IF INSIDE A LISTENER
         // Also used to initially set all of the fields in settings!
@@ -238,7 +238,9 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, vibration_on);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, minigame_on);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ON, alarm_on);
-                
+
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_POSITION, intentBundle.getInt(AlarmListDisplayActivity.ALARM_POSITION));
+
                 setResult(RESULT_OK, updateIntent);
                 finish();
             }

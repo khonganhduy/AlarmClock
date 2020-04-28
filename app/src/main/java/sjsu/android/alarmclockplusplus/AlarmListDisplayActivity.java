@@ -43,6 +43,8 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
     public static final String ALARM_ON = "alarmOn";
     public static final String ALARM_RING_NAME = "alarm_ring_name";
     public static final int SNOOZE_REQUEST_CODE = 24444;
+    public static final String ALARM_POSITION = "position";
+    private AlarmListDisplayAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,8 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         // specify an adapter
-        final AlarmListDisplayAdapter mAdapter = new AlarmListDisplayAdapter(this, mViewModel);
+        mAdapter = new AlarmListDisplayAdapter(this, mViewModel);
+        //final AlarmListDisplayAdapter mAdapter = new AlarmListDisplayAdapter(this, mViewModel);
         recyclerView.setAdapter(mAdapter);
 
         mViewModel.getAlarmList().observe(this, new Observer<List<Alarm>>(){
@@ -107,7 +110,11 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
             boolean minigame = data.getBooleanExtra(ALARM_MINIGAME, false);
             boolean alarmOn = data.getBooleanExtra(ALARM_ON, false);
             mViewModel.update(id, time, path, repeat, trigger, snooze, desc, snooze_time, vibration, minigame, alarmOn);
-            setTimer(time, trigger, path, snooze_time, id, vibration, minigame);
+            Log.d("DEBUG", String.valueOf(data.getIntExtra(ALARM_POSITION, 20)));
+            mAdapter.highlightedItemPosition = data.getIntExtra(ALARM_POSITION, -1);
+            Log.d("DEBUG", String.valueOf(mAdapter.highlightedItemPosition));
+            mAdapter.notifyItemChanged(mAdapter.highlightedItemPosition);
+            //setTimer(time, trigger, path, snooze_time, id, vibration, minigame);
         }
     }
 
