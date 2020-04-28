@@ -82,6 +82,8 @@ public class SnoozeActivity extends AppCompatActivity {
         int alarmId = myInput.getInt(AlarmListDisplayActivity.ALARM_ID);
         i.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, myInput.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME));
         i.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH,  myInput.getString(AlarmListDisplayActivity.ALARM_RING_PATH));
+        i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, myInput.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
+        i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, myInput.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
         i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarmId);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(v.getContext(), alarmId, i, 0);
         Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_SHORT).show();

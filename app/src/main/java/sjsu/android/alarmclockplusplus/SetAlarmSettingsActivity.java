@@ -250,7 +250,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 Toast.makeText(SetAlarmSettingsActivity.this, "Sound Selector Clicked",
                         Toast.LENGTH_LONG).show();
                 Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
-                view.getContext().startActivity(soundSelectorIntent);
+                startActivityForResult(soundSelectorIntent, 0);
             }
         });
 
@@ -451,29 +451,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
     }
 
     //------------------------------------------------------------------
-    // CURRENTLY WORKING METHOD TO SET AN ALARM
-    public void setTimer(View v){
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Date date = new Date();
-        Calendar cal_alarm = Calendar.getInstance();
-        Calendar cal_now = Calendar.getInstance();
 
-        cal_now.setTime(date);
-        cal_alarm.setTime(date);
-
-        cal_alarm.set(Calendar.HOUR_OF_DAY, tp.getHour());
-        cal_alarm.set(Calendar.MINUTE, tp.getMinute());
-        cal_alarm.set(Calendar.SECOND, 0);
-
-        if (cal_alarm.before(cal_now)){
-            cal_alarm.add(Calendar.DATE, 1);
-        }
-
-        Intent i = new Intent(SetAlarmSettingsActivity.this, AlarmBroadcastReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(SetAlarmSettingsActivity.this, 24444, i, 0);
-        Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_SHORT).show();
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
