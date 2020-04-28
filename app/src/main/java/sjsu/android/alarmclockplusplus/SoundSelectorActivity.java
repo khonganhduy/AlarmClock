@@ -23,6 +23,7 @@ public class SoundSelectorActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<String> myDataset;
+    private ArrayList<String> names;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,12 +88,13 @@ public class SoundSelectorActivity extends AppCompatActivity {
 
         if(cur != null) {
             myDataset = new ArrayList<String>();
+            names = new ArrayList<String>();
             count = cur.getCount();
             if(count > 0) {
                 while(cur.moveToNext()) {
                     myDataset.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.DATA)));
                     // Add code to get more column here
-
+                    names.add(cur.getString(cur.getColumnIndex(MediaStore.Audio.Media.TITLE)));
                     // Save to your list here
                 }
             }
@@ -107,7 +109,7 @@ public class SoundSelectorActivity extends AppCompatActivity {
             layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
             // specify an adapter (see also next example
-            mAdapter = new SoundSelectorAdapter(myDataset);
+            mAdapter = new SoundSelectorAdapter(myDataset, names);
             recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
             recyclerView.setAdapter(mAdapter);
         }

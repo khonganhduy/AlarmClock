@@ -16,6 +16,8 @@ import static android.app.Activity.RESULT_OK;
 
 public class SoundSelectorAdapter extends RecyclerView.Adapter<SoundSelectorAdapter.MyViewHolder>{
     private ArrayList<String> mDataset;
+    private ArrayList<String> names;
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -33,8 +35,9 @@ public class SoundSelectorAdapter extends RecyclerView.Adapter<SoundSelectorAdap
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public SoundSelectorAdapter(ArrayList<String> myDataset) {
-        mDataset = myDataset;
+    public SoundSelectorAdapter(ArrayList<String> myDataset, ArrayList<String> names) {
+        this.mDataset = myDataset;
+        this.names = names;
     }
 
     //public void updateData(String data, int position){
@@ -58,12 +61,13 @@ public class SoundSelectorAdapter extends RecyclerView.Adapter<SoundSelectorAdap
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.textview.setText(mDataset.get(position));
+        holder.textview.setText(names.get(position));
         holder.textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent updateIntent = new Intent();
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, mDataset.get(position));
+                updateIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_NAME, names.get(position));
                 Log.d("DEBUG", mDataset.get(position));
                 Activity activity = (Activity) view.getContext();
                 activity.setResult(RESULT_OK, updateIntent);

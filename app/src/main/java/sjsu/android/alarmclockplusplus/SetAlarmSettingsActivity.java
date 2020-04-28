@@ -74,7 +74,10 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         // Set music display to chosen song from previous settings
         musicTextView = (TextView) findViewById(R.id.second_line1);
         if(ringtone_path != null){
-            musicTextView.setText(ringtone_path);
+            int index = ringtone_path.lastIndexOf('/');
+            String title  = ringtone_path.substring(index + 1);
+            title = title.trim();
+            musicTextView.setText(title);
         }
         // Set snooze time to previous selected value
         snoozeTimeTextView = (TextView) findViewById(R.id.snoozeTimeTextView);
@@ -123,9 +126,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         save.setOnClickListener(new View.OnClickListener() { // PULL DATA FROM THE SETTINGS VIEW TO UPDATE DATABASE (with updateIntent.putExtra(FIELD DEFINED IN ALARMLISTDISPLAYACTIVITY, VALUE))
             @Override
             public void onClick(View view) {
-                //----------------------------
-                //setTimer(view);
-                //---------------------------
+
 
                 String time;
                 String mins = Integer.toString(tp.getMinute());
@@ -143,9 +144,9 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                         time = tp.getHour() + ":" + mins + " AM";
                     }
                 }
-                if(musicTextView.getText().toString() != getString(R.string.music_default_text)) {
+                /*if(musicTextView.getText().toString() != getString(R.string.music_default_text)) {
                     ringtone_path = musicTextView.getText().toString();
-                }
+                }*/
 
                 if(dateTextView.getText().toString().compareTo(getString(R.string.date_message)) != 0){
                     repeatable_days = null;
@@ -458,8 +459,9 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
             Log.d("DEBUG", "JOJO");
+            String name = data.getStringExtra(AlarmListDisplayActivity.ALARM_RING_NAME);
             ringtone_path = data.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
-            musicTextView.setText(ringtone_path);
+            musicTextView.setText(name);
         }
     }
 }

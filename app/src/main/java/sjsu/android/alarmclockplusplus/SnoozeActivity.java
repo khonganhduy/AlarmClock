@@ -22,6 +22,7 @@ public class SnoozeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.DarkTheme);
         myInput = this.getIntent().getExtras();
         setContentView(R.layout.activity_snooze);
         snooze = (Button)findViewById(R.id.snooze_btn);
