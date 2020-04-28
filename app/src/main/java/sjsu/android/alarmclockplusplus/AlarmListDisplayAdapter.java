@@ -110,23 +110,46 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         vh.mySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                // FIX LISTENER TO ACTIVATE/DEACTIVATE ALARM!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-               // SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
-                //Calendar calendar = Calendar.getInstance();
-                //try{
-                   // Date date = dateFormat.parse(timeText);
-                    //calendar.setTime(date);
-                    //int requestCode = alarm.getAlarmId();
-                    if(isChecked){
-                        mViewModel.update(alarm.getAlarmId(), true);
+                if(isChecked){
+                    mViewModel.update(alarm.getAlarmId(), true);
+                    // Original date alarm
+                    if(alarm.getRepeatableDays() == null) {
                         setTimer(alarm);
-
-                    /*Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
-                    receiverIntent.putExtra("notification",timeText);
-                    vh.pendingIntent = PendingIntent.getBroadcast(compoundButton.getContext(), requestCode, receiverIntent, 0);
-                    vh.alarmManager.setExact(AlarmManager.RTC, calendar.getTimeInMillis(), vh.pendingIntent);*/
                     }
+                    // Repeated alarm
                     else{
+                        int alarmId = alarm.getAlarmId();
+                        String[] days = alarm.getRepeatableDays().split(" ");
+                        for(int i = 0; i < days.length; i++){
+                            switch(days[i]){
+                                case "M":
+                                    setRepeatTimer(alarm, alarmId + 1, 1);
+                                    break;
+                                case "T":
+                                    setRepeatTimer(alarm, alarmId + 2, 2);
+                                    break;
+                                case "W":
+                                    setRepeatTimer(alarm, alarmId + 3, 3);
+                                    break;
+                                case "Th":
+                                    setRepeatTimer(alarm, alarmId + 4, 4);
+                                    break;
+                                case "F":
+                                    setRepeatTimer(alarm, alarmId + 5, 5);
+                                    break;
+                                case "Sa":
+                                    setRepeatTimer(alarm, alarmId + 6, 6);
+                                    break;
+                                case "Su":
+                                    setRepeatTimer(alarm, alarmId + 7, 7);
+                                    break;
+                            }
+                        }
+                    }
+                }
+                else{
+                    // Original alarm deactivate
+                    if (alarm.getRepeatableDays() == null) {
                         mViewModel.update(alarm.getAlarmId(), false);
                         Intent i = new Intent(context, AlarmBroadcastReceiver.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId(), i, 0);
@@ -134,9 +157,49 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                         pendingIntent = PendingIntent.getBroadcast(context, AlarmListDisplayActivity.SNOOZE_REQUEST_CODE, i, 0);
                         pendingIntent.cancel();
                     }
-               // } catch (ParseException e) {
-                   // e.printStackTrace();
-               // }
+                    //Repeated days intent
+                    else{
+                        mViewModel.update(alarm.getAlarmId(), false);
+                        Intent intent = new Intent(context, AlarmBroadcastReceiver.class);
+                        int alarmId = alarm.getAlarmId();
+                        String[] days = alarm.getRepeatableDays().split(" ");
+                        PendingIntent pendingIntent;
+                        for(int i = 0; i < days.length; i++){
+                            switch(days[i]){
+                                case "M":
+                                    pendingIntent = PendingIntent.getBroadcast(context, alarmId + 1, intent, 0);
+                                    pendingIntent.cancel();
+                                    break;
+                                case "T":
+                                    pendingIntent = PendingIntent.getBroadcast(context, alarmId + 2, intent, 0);
+                                    pendingIntent.cancel();
+                                    break;
+                                case "W":
+                                    pendingIntent = PendingIntent.getBroadcast(context, alarmId + 3, intent, 0);
+                                    pendingIntent.cancel();
+                                    break;
+                                case "Th":
+                                    pendingIntent = PendingIntent.getBroadcast(context, alarmId + 4, intent, 0);
+                                    pendingIntent.cancel();
+                                    break;
+                                case "F":
+                                    pendingIntent = PendingIntent.getBroadcast(context, alarmId + 5, intent, 0);
+                                    pendingIntent.cancel();
+                                    break;
+                                case "Sa":
+                                    pendingIntent = PendingIntent.getBroadcast(context, alarmId + 6, intent, 0);
+                                    pendingIntent.cancel();
+                                    break;
+                                case "Su":
+                                    pendingIntent = PendingIntent.getBroadcast(context, alarmId + 7, intent, 0);
+                                    pendingIntent.cancel();
+                                    break;
+                            }
+                        }
+                        pendingIntent = PendingIntent.getBroadcast(context, AlarmListDisplayActivity.SNOOZE_REQUEST_CODE, intent, 0);
+                        pendingIntent.cancel();
+                    }
+                }
             }
         });
         // Set alarm to off or on based on previous settings
@@ -220,4 +283,37 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
     }
 
+    public void setRepeatTimer(Alarm alarm, int alarmSubID, int dayOfWeek){
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
+        Calendar cal_alarm = Calendar.getInstance();
+        Calendar cal_now = Calendar.getInstance();
+        try{
+            Date newDate = dateFormat.parse(alarm.getAlarmTime());
+            Date date = new Date();
+            cal_now.setTime(date);
+            cal_alarm.setTime(date);
+            cal_alarm.set(Calendar.DAY_OF_WEEK, dayOfWeek);
+
+            // Check we aren't setting it in the past which would trigger it to fire instantly
+            if(cal_alarm.getTimeInMillis() < System.currentTimeMillis()) {
+                cal_alarm.add(Calendar.DAY_OF_YEAR, 7);
+            }
+            cal_alarm.set(Calendar.HOUR_OF_DAY, newDate.getHours());
+            cal_alarm.set(Calendar.MINUTE, newDate.getMinutes());
+            cal_alarm.set(Calendar.SECOND, 0);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Intent i = new Intent(context, AlarmBroadcastReceiver.class);
+        i.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, alarm.getRingtonePath());
+        i.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, alarm.getSnoozeTime());
+        i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
+        i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
+        i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmSubID, i, 0);
+        Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show();
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+    }
 }
