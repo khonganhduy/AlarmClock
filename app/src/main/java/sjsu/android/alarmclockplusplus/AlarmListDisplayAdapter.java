@@ -40,6 +40,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         public ImageButton deleteButton;
         public AlarmManager alarmManager;
 
+
         public MyViewHolder(CardView v) {
             super(v);
             cardView = v;
@@ -118,7 +119,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                     //int requestCode = alarm.getAlarmId();
                     if(isChecked){
                         mViewModel.update(alarm.getAlarmId(), true);
-                        setTimer(compoundButton, alarm);
+                        setTimer(alarm);
 
                     /*Intent receiverIntent = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
                     receiverIntent.putExtra("notification",timeText);
@@ -127,8 +128,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                     }
                     else{
                         mViewModel.update(alarm.getAlarmId(), false);
-                        Intent i = new Intent(compoundButton.getContext(), AlarmBroadcastReceiver.class);
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(compoundButton.getContext(), alarm.getAlarmId(), i, 0);
+                        Intent i = new Intent(context, AlarmBroadcastReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId(), i, 0);
                         pendingIntent.cancel();
                     }
                // } catch (ParseException e) {
@@ -176,9 +177,9 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     }
 
     // CURRENTLY WORKING METHOD TO SET AN ALARM
-    public void setTimer(View v, Alarm alarm){
+    public void setTimer(Alarm alarm){
 
-        AlarmManager alarmManager = (AlarmManager) v.getContext().getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
         Calendar cal_alarm = Calendar.getInstance();
         Calendar cal_now = Calendar.getInstance();
@@ -199,7 +200,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             cal_alarm.add(Calendar.DATE, 1);
         }
 
-        Intent i = new Intent(v.getContext(), AlarmBroadcastReceiver.class);
+        Intent i = new Intent(context, AlarmBroadcastReceiver.class);
         i.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, alarm.getRingtonePath());
         i.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, alarm.getSnoozeTime());
         i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
@@ -207,8 +208,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
         //Log.d("DEBUG", alarm.getRingtonePath());
         Log.d("DEBUG", String.valueOf(alarm.getSnoozeTime()));
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(v.getContext(), alarm.getAlarmId(), i, 0);
-        Toast.makeText(v.getContext(), "Alarm set", Toast.LENGTH_SHORT).show();
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId(), i, 0);
+        Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show();
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
     }
 

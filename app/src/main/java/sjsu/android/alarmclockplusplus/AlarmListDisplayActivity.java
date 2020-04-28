@@ -2,6 +2,7 @@ package sjsu.android.alarmclockplusplus;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -97,5 +98,11 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
             boolean alarmOn = data.getBooleanExtra(ALARM_ON, false);
             mViewModel.update(id, time, path, repeat, trigger, snooze, desc, snooze_time, vibration, minigame, alarmOn);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("DEBUG", "MAIN ACTIVITY DESTROYED");
+        super.onDestroy();
     }
 }

@@ -128,6 +128,8 @@ public class SimulationView extends View {
                         myIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME,  myInput.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME));
                         myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH,  myInput.getString(AlarmListDisplayActivity.ALARM_RING_PATH));
                         myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, myInput.getInt(AlarmListDisplayActivity.ALARM_ID));
+                        myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, myInput.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
+                        myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, myInput.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
                         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(myIntent);
                     }

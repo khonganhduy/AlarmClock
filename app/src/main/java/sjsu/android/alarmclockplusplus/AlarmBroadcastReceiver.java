@@ -1,6 +1,7 @@
 package sjsu.android.alarmclockplusplus;
 
 import android.app.Activity;
+import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.os.VibrationEffect;
@@ -48,7 +50,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         String filepath = intent.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
         int snoozeTime = intent.getIntExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, 1);
         //Log.d("DEBUG", filepath);
-        Log.d("DEBUG", String.valueOf(snoozeTime));
+        Log.d("DEBUG", "BROADCAST RECEIVED");
         /*
         Vibrator vibrator = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
         // {number of millis before turning vibrator on, number of millis to keep vibrator on before turning off, number of millis vibrator is off before turning it on}
@@ -69,7 +71,10 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         Ringtone r = RingtoneManager.getRingtone(context, notification);
         r.play();
         */
+
+
         Intent startIntent = new Intent(context, AlarmRingService.class);
+        startIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, "");
         if (filepath == null){
             startIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, "");
         }
@@ -77,7 +82,16 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             startIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
         }
         startIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
-        context.startService(startIntent);
+        Log.d("DEBUG", "Attempting to start service " + filepath);
+        startIntent.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, snoozeTime);
+        startIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
+        startIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+
+
+        Log.d("DEBUG", context.toString());
+        Log.d("DEBUG", startIntent.toString());
+        context.startForegroundService(startIntent);
+        Log.d("DEBUG", "post service");
 
 
         // Start game activity
@@ -87,8 +101,9 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
-            startIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
             myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Log.d("DEBUG", "STARTING MINIGAME");
             context.startActivity(myIntent);
         }
         else {
@@ -97,13 +112,10 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, filepath);
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
-            startIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
             myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Log.d("DEBUG", "STARTING SNOOZE");
             context.startActivity(myIntent);
         }
-
-
-
-
     }
 }
