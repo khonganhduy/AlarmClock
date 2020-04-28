@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 import android.widget.EditText;
+import android.widget.ToggleButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,8 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
     TextView snoozeTimeTextView, musicTextView, dateTextView;
     EditText descriptionEditText;
     Switch vibrationToggleSwitch, minigameToggleSwitch;
+    ToggleButton saButton,suButton,mButton,tButton,wButton,thButton,fButton;
+    boolean[] daysButtonsActivated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +45,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         setTheme(R.style.DarkTheme);
         setContentView(R.layout.activity_alarm);
         Bundle intentBundle = getIntent().getExtras();
-
+        daysButtonsActivated = new boolean[7];
         // MAKE FINAL IF INSIDE A LISTENER
         // Also used to initially set all of the fields in settings!
         String timeText = intentBundle.getString(AlarmListDisplayActivity.ALARM_TIME);
@@ -78,10 +81,18 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         snoozeTimeTextView.setText(String.valueOf(snooze_time) + " minutes");
 
 
-        final TextView dateTextView = (TextView) findViewById(R.id.dateDisplayTextView);
+        dateTextView = (TextView) findViewById(R.id.dateDisplayTextView);
         if(trigger_date != null){
             dateTextView.setText(trigger_date);
         }
+
+        mButton = (ToggleButton) findViewById(R.id.mondayButton);
+        tButton = (ToggleButton) findViewById(R.id.tuesdayButton);
+        wButton = (ToggleButton) findViewById(R.id.wednesdayButton);
+        thButton = (ToggleButton) findViewById(R.id.thursdayButton);
+        fButton = (ToggleButton) findViewById(R.id.fridayButton);
+        saButton = (ToggleButton) findViewById(R.id.saturdayButton);
+        suButton = (ToggleButton) findViewById(R.id.sundayButton);
 
 
         tp = (TimePicker) findViewById(R.id.time_picker);
@@ -135,15 +146,85 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 if(musicTextView.getText().toString() != getString(R.string.music_default_text)) {
                     ringtone_path = musicTextView.getText().toString();
                 }
-                // Pull states from the Day buttons and save to repeatable days
-                // code here
-                // Trigger dates have more priority, thus overwrite repeatable days
-                if(dateTextView.getText().toString() != getString(R.string.date_message)){
+
+                if(dateTextView.getText().toString().compareTo(getString(R.string.date_message)) != 0){
                     repeatable_days = null;
                     trigger_date = dateTextView.getText().toString();
                 }
                 description = descriptionEditText.getText().toString();
 
+                if(dateTextView.getText().toString().compareTo(getString(R.string.date_message)) == 0) {
+                    for (int i = 0; i < daysButtonsActivated.length; i++) {
+                        switch (i) {
+                            case 0:
+                                if (daysButtonsActivated[0]) {
+                                    if (repeatable_days == null) {
+                                        repeatable_days = "M ";
+                                    } else {
+                                        repeatable_days = repeatable_days.concat("M ");
+                                    }
+                                }
+                                break;
+                            case 1:
+                                if (daysButtonsActivated[1]) {
+                                    if (repeatable_days == null) {
+                                        repeatable_days = "T ";
+                                    } else {
+                                        repeatable_days = repeatable_days.concat("T ");
+                                    }
+                                }
+                                break;
+                            case 2:
+                                if (daysButtonsActivated[2]) {
+                                    if (repeatable_days == null) {
+                                        repeatable_days = "W ";
+                                    } else {
+                                        repeatable_days = repeatable_days.concat("W ");
+                                    }
+                                }
+                                break;
+                            case 3:
+                                if (daysButtonsActivated[3]) {
+                                    if (repeatable_days == null) {
+                                        repeatable_days = "Th ";
+                                    } else {
+                                        repeatable_days = repeatable_days.concat("Th ");
+                                    }
+                                }
+                                break;
+                            case 4:
+                                if (daysButtonsActivated[4]) {
+                                    if (repeatable_days == null) {
+                                        repeatable_days = "F ";
+                                    } else {
+                                        repeatable_days = repeatable_days.concat("F ");
+                                    }
+                                }
+                                break;
+                            case 5:
+                                if (daysButtonsActivated[5]) {
+                                    if (repeatable_days == null) {
+                                        repeatable_days = "Sa";
+                                    } else {
+                                        repeatable_days = repeatable_days.concat("Sa ");
+                                    }
+                                }
+                                break;
+                            case 6:
+                                if (daysButtonsActivated[6]) {
+                                    if (repeatable_days == null) {
+                                        repeatable_days = "Su ";
+                                    } else {
+                                        repeatable_days = repeatable_days.concat("Su ");
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+                if(repeatable_days != null) {
+                    repeatable_days = repeatable_days.substring(0, repeatable_days.length() - 1);
+                }
                 Intent updateIntent = new Intent();
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm_id);
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_TIME, time);
@@ -195,6 +276,15 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         final DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // Make repeat days empty if we select a date
+                repeatable_days = null;
+                mButton.setChecked(false);
+                tButton.setChecked(false);
+                wButton.setChecked(false);
+                thButton.setChecked(false);
+                fButton.setChecked(false);
+                saButton.setChecked(false);
+                suButton.setChecked(false);
                 // MONTH STARTS AT 0 SO WE CHANGE IT TO MATCH NORMAL CONVENTION
                 int normalMonth = month + 1;
                 dateTextView.setText(normalMonth + "/" + day + "/" + year);
@@ -228,6 +318,129 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 minigame_on = b;
             }
         });
+
+        mButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                if(on){
+                    trigger_date = null;
+                    dateTextView.setText(getString(R.string.date_message));
+                    daysButtonsActivated[0] = true;
+                }
+                else{
+                    daysButtonsActivated[0] = false;
+                }
+            }
+        });
+        tButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                if(on){
+                    trigger_date = null;
+                    dateTextView.setText(getString(R.string.date_message));
+                    daysButtonsActivated[1] = true;
+                }
+                else{
+                    daysButtonsActivated[1] = false;
+                }
+            }
+        });
+        wButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                if(on){
+                    trigger_date = null;
+                    dateTextView.setText(getString(R.string.date_message));
+                    daysButtonsActivated[2] = true;
+                }
+                else{
+                    daysButtonsActivated[2] = false;
+                }
+            }
+        });
+        thButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                if(on){
+                    trigger_date = null;
+                    dateTextView.setText(getString(R.string.date_message));
+                    daysButtonsActivated[3] = true;
+                }
+                else{
+                    daysButtonsActivated[3] = false;
+                }
+            }
+        });
+        fButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                if(on){
+                    trigger_date = null;
+                    dateTextView.setText(getString(R.string.date_message));
+                    daysButtonsActivated[4] = true;
+                }
+                else{
+                    daysButtonsActivated[4] = false;
+                }
+            }
+        });
+        saButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                if(on){
+                    trigger_date = null;
+                    dateTextView.setText(getString(R.string.date_message));
+                    daysButtonsActivated[5] = true;
+                }
+                else{
+                    daysButtonsActivated[5] = false;
+                }
+            }
+        });
+        suButton.setOnCheckedChangeListener(new ToggleButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean on) {
+                if(on){
+                    trigger_date = null;
+                    dateTextView.setText(getString(R.string.date_message));
+                    daysButtonsActivated[6] = true;
+                }
+                else{
+                    daysButtonsActivated[6] = false;
+                }
+            }
+        });
+
+        // Set the repeat day buttons to on if they were previously set on
+        if(repeatable_days != null){
+            String[] daysActivated = repeatable_days.split(" ");
+            repeatable_days = null; // Clear out the initial selection as user may select different days
+            for(int i = 0; i < daysActivated.length; i++){
+                switch (daysActivated[i]){
+                    case "M":
+                        mButton.setChecked(true);
+                        break;
+                    case "T":
+                        tButton.setChecked(true);
+                        break;
+                    case "W":
+                        wButton.setChecked(true);
+                        break;
+                    case "Th":
+                        thButton.setChecked(true);
+                        break;
+                    case "F":
+                        fButton.setChecked(true);
+                        break;
+                    case "Sa":
+                        saButton.setChecked(true);
+                        break;
+                    case "Su":
+                        suButton.setChecked(true);
+                        break;
+                }
+            }
+        }
     }
 
     // Return information from fragment

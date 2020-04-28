@@ -158,7 +158,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 daysDisplay.setText(alarm.getTriggerDate());
             }
             else{
-                daysDisplay.setText("M T W Th F Sa Su");
+                daysDisplay.setText("Tomorrow");
             }
         }
         else {
@@ -185,10 +185,15 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         try{
             Date newDate = dateFormat.parse(alarm.getAlarmTime());
             Date date = new Date();
-
             cal_now.setTime(date);
             cal_alarm.setTime(date);
-
+            // To set an alarm on a specific date
+            if(alarm.getTriggerDate() != null){
+                String[] dateParams = alarm.getTriggerDate().split("/");
+                cal_alarm.set(Calendar.MONTH, Integer.parseInt(dateParams[0]));
+                cal_alarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateParams[1]));
+                cal_alarm.set(Calendar.YEAR, Integer.parseInt(dateParams[2]));
+            }
             cal_alarm.set(Calendar.HOUR_OF_DAY, newDate.getHours());
             cal_alarm.set(Calendar.MINUTE, newDate.getMinutes());
             cal_alarm.set(Calendar.SECOND, 0);
