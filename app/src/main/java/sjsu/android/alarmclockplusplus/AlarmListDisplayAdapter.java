@@ -193,7 +193,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             // To set an alarm on a specific date
             if(alarm.getTriggerDate() != null){
                 String[] dateParams = alarm.getTriggerDate().split("/");
-                cal_alarm.set(Calendar.MONTH, Integer.parseInt(dateParams[0]));
+                cal_alarm.set(Calendar.MONTH, Integer.parseInt(dateParams[0]) - 1);
                 cal_alarm.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateParams[1]));
                 cal_alarm.set(Calendar.YEAR, Integer.parseInt(dateParams[2]));
             }
