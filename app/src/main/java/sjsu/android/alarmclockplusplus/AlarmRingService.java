@@ -38,6 +38,7 @@ public class AlarmRingService extends Service {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setContentTitle("Notification Alert, Click Me!");
         mBuilder.setContentText("Hi, This is Android Notification Detail!");*/
+        android.os.Debug.waitForDebugger();
         Intent notificationIntent = new Intent(this, SnoozeActivity.class);
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, notificationIntent, 0);
