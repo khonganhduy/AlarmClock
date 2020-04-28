@@ -131,6 +131,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                         Intent i = new Intent(context, AlarmBroadcastReceiver.class);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId(), i, 0);
                         pendingIntent.cancel();
+                        pendingIntent = PendingIntent.getBroadcast(context, AlarmListDisplayActivity.SNOOZE_REQUEST_CODE, i, 0);
+                        pendingIntent.cancel();
                     }
                // } catch (ParseException e) {
                    // e.printStackTrace();

@@ -33,6 +33,7 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
     public static final String ALARM_VIBRATION = "vibration";
     public static final String ALARM_MINIGAME = "minigame";
     public static final String ALARM_ON = "alarmOn";
+    public static final int SNOOZE_REQUEST_CODE = 24444;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
