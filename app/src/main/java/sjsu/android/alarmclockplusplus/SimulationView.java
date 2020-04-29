@@ -122,6 +122,7 @@ public class SimulationView extends View {
                         myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, myInput.getInt(AlarmListDisplayActivity.ALARM_ID));
                         myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, myInput.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
                         myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, myInput.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+                        myIntent.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, myInput.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS));
                         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(myIntent);
                     }

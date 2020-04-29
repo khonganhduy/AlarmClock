@@ -45,6 +45,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, intent.getExtras().getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS));
+
             myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(myIntent);
         }
@@ -55,6 +57,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_ID, intent.getExtras().getInt(AlarmListDisplayActivity.ALARM_ID));
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
             myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
+            myIntent.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, intent.getExtras().getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS));
             myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(myIntent);
         }

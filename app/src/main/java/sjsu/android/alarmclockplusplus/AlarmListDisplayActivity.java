@@ -17,7 +17,6 @@ import java.util.List;
 // Main screen to display all existing alarms
 public class AlarmListDisplayActivity extends AppCompatActivity {
     private TextView addAlarmView;
-    private TextView textClock;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
     private AlarmViewModel mViewModel;
@@ -64,16 +63,21 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
             }
         });
 
-        textClock = (TextView)findViewById(R.id.textClock);
 
         addAlarmView = (TextView) findViewById(R.id.addAlarmButton);
         addAlarmView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mViewModel.insert(new Alarm((int)Math.round(Math.random() * 100000), "6:00 AM",
-                        null, "M T W Th F Sa Su", null, false, null,1, false, false, false));
+                        null, null, null, false, null,1, false, false, false));
             }
         });
+
+        Bundle myInput = getIntent().getExtras();
+        if (myInput != null && myInput.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS) == null){
+            int alarmId = myInput.getInt(AlarmListDisplayActivity.ALARM_ID);
+            mViewModel.update(alarmId, false);
+        }
     }
 
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -114,7 +115,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                     mViewModel.update(alarm.getAlarmId(), true);
                     // Original date alarm
                     if(alarm.getRepeatableDays() == null) {
-                        setTimer(alarm);
+                        setTimer(alarm, position);
                     }
                     // Repeated alarm
                     else{
@@ -255,7 +256,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
     }
 
     // CURRENTLY WORKING METHOD TO SET AN ALARM
-    public void setTimer(Alarm alarm){
+    public void setTimer(Alarm alarm, int position){
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a");
@@ -289,6 +290,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
         i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
         i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
+        i.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, alarm.getRepeatableDays());
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId(), i, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
     }
@@ -322,6 +325,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
         i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
         i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
+        i.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, alarm.getRepeatableDays());
+
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmSubID, i, 0);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
     }

@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/bgColor"
+    android:orientation="vertical"
     >
 
-    <TextView
-        android:id="@+id/textClock"
-        android:layout_width="match_parent"
-        android:layout_height="210dp"
-        android:gravity="center"
-        android:text="No Alarms On"
-        android:textSize="38sp"
-        android:textColor="?attr/textColor"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-         />
-
-    <TextView
-        android:id="@+id/addAlarmButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textClock"
-        android:gravity="center"
-        android:text="Press to Add Alarm"
-        android:textColor="?attr/textColor"
-        android:layout_marginBottom="1dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/addAlarmButton"
-        android:layout_marginTop="0dp" />
+        android:orientation="vertical"
+        android:layout_weight="1"
+        >
 
-</RelativeLayout>
+        <DigitalClock
+            android:id="@+id/textClock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:inputType="time"
+            android:textColor="@android:color/white"
+            android:textSize="50sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight=".5"
+        >
+
+        <TextView
+            android:id="@+id/addAlarmButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="1dp"
+            android:gravity="center"
+            android:text="Press to Add Alarm"
+            android:textColor="?attr/textColor" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/addAlarmButton"
+            android:layout_marginTop="0dp" />
+    </RelativeLayout>
+
+</LinearLayout>
