@@ -74,7 +74,7 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         });
 
         Bundle myInput = getIntent().getExtras();
-        if (myInput != null && myInput.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS) == null){
+        if (myInput != null && myInput.getBoolean("dismiss")){
             int alarmId = myInput.getInt(AlarmListDisplayActivity.ALARM_ID);
             mViewModel.update(alarmId, false);
         }

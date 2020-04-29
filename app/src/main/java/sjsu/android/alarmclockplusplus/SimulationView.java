@@ -71,7 +71,8 @@ public class SimulationView extends View {
         arrow.drawParticle(canvas, direction, mDisplay);
         paint.setColor(Color.WHITE);
         paint.setTextSize(40);
-        canvas.drawText("Score: " + String.valueOf(scoreTracker), 10, 45, paint);
+        canvas.drawText("Goal: " + String.valueOf(GOAL), 10, 45, paint);
+        canvas.drawText("Score: " + String.valueOf(scoreTracker), 10, 85, paint);
         invalidate();
     }
     private class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
