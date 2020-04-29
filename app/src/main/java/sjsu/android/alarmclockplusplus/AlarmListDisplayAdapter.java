@@ -224,9 +224,6 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             if(alarm.getTriggerDate() != null){
                 daysDisplay.setText(alarm.getTriggerDate());
             }
-            else{
-                daysDisplay.setText("Tomorrow");
-            }
         }
         else {
             daysDisplay.setText(alarm.getRepeatableDays());
