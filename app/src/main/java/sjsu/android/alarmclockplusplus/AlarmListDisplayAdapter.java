@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -228,7 +227,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         else {
             daysDisplay.setText(alarm.getRepeatableDays());
         }
-        //-----------------------
+
         if (highlightedItemPosition == position){
             if (holder.mySwitch.isChecked()){
                 holder.mySwitch.setChecked(false);
@@ -252,7 +251,6 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         return 0;
     }
 
-    // CURRENTLY WORKING METHOD TO SET AN ALARM
     public void setTimer(Alarm alarm, int position){
 
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -302,16 +300,17 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
             Date newDate = dateFormat.parse(alarm.getAlarmTime());
             Date date = new Date();
             cal_now.setTime(date);
+            cal_now.set(Calendar.SECOND, 0);
             cal_alarm.setTime(date);
             cal_alarm.set(Calendar.DAY_OF_WEEK, dayOfWeek);
 
-            // Check we aren't setting it in the past which would trigger it to fire instantly
-            if(cal_alarm.getTimeInMillis() < System.currentTimeMillis()) {
-                cal_alarm.add(Calendar.DAY_OF_YEAR, 7);
-            }
             cal_alarm.set(Calendar.HOUR_OF_DAY, newDate.getHours());
             cal_alarm.set(Calendar.MINUTE, newDate.getMinutes());
             cal_alarm.set(Calendar.SECOND, 0);
+            // Check we aren't setting it in the past which would trigger it to fire instantly
+            if(cal_alarm.getTimeInMillis() <= cal_now.getTimeInMillis()) {
+                cal_alarm.add(Calendar.DAY_OF_YEAR, 7);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }

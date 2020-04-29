@@ -42,7 +42,7 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         setContentView(R.layout.activity_alarm);
         final Bundle intentBundle = getIntent().getExtras();
         daysButtonsActivated = new boolean[7];
-        // MAKE FINAL IF INSIDE A LISTENER
+
         // Also used to initially set all of the fields in settings!
         String timeText = intentBundle.getString(AlarmListDisplayActivity.ALARM_TIME);
         final int alarm_id = intentBundle.getInt(AlarmListDisplayActivity.ALARM_ID);
