@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -78,8 +77,6 @@ public class SoundSelectorActivity extends AppCompatActivity {
     }
 
     private void fillMusicList(){
-        Toast.makeText(SoundSelectorActivity.this, "has permission",
-                Toast.LENGTH_LONG).show();
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0";
         String sortOrder = MediaStore.Audio.Media.TITLE + " ASC";

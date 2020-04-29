@@ -2,7 +2,6 @@ package sjsu.android.alarmclockplusplus;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +67,6 @@ public class SoundSelectorAdapter extends RecyclerView.Adapter<SoundSelectorAdap
                 Intent updateIntent = new Intent();
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH, mDataset.get(position));
                 updateIntent.putExtra(AlarmListDisplayActivity.ALARM_RING_NAME, names.get(position));
-                Log.d("DEBUG", mDataset.get(position));
                 Activity activity = (Activity) view.getContext();
                 activity.setResult(RESULT_OK, updateIntent);
                 activity.finish();

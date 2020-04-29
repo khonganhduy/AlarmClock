@@ -1,14 +1,10 @@
 package sjsu.android.alarmclockplusplus;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,10 +12,6 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 // Main screen to display all existing alarms
@@ -84,15 +76,6 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
         });
     }
 
-    /*protected void onResume() {
-        super.onResume();
-        Bundle savedData = getIntent().getExtras();
-        if(getIntent() != null && savedData != null){
-            int position = savedData.getInt("position");
-            String time = savedData.getString("time");
-            textClock.setText(time);
-        }
-    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -110,17 +93,8 @@ public class AlarmListDisplayActivity extends AppCompatActivity {
             boolean minigame = data.getBooleanExtra(ALARM_MINIGAME, false);
             boolean alarmOn = data.getBooleanExtra(ALARM_ON, false);
             mViewModel.update(id, time, path, repeat, trigger, snooze, desc, snooze_time, vibration, minigame, alarmOn);
-            Log.d("DEBUG", String.valueOf(data.getIntExtra(ALARM_POSITION, 20)));
             mAdapter.highlightedItemPosition = data.getIntExtra(ALARM_POSITION, -1);
-            Log.d("DEBUG", String.valueOf(mAdapter.highlightedItemPosition));
             mAdapter.notifyItemChanged(mAdapter.highlightedItemPosition);
-            //setTimer(time, trigger, path, snooze_time, id, vibration, minigame);
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.d("DEBUG", "MAIN ACTIVITY DESTROYED");
-        super.onDestroy();
     }
 }

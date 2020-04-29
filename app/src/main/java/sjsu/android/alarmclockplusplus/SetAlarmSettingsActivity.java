@@ -1,12 +1,9 @@
 package sjsu.android.alarmclockplusplus;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.PendingIntent;
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -14,7 +11,6 @@ import android.widget.DatePicker;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 import android.widget.EditText;
 import android.widget.ToggleButton;
 
@@ -116,8 +112,6 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Intent returnIntent = new Intent(view.getContext(), AlarmListDisplayActivity.class);
-                startActivity(returnIntent);*/
                 setResult(RESULT_CANCELED);
                 finish();
             }
@@ -144,9 +138,6 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                         time = tp.getHour() + ":" + mins + " AM";
                     }
                 }
-                /*if(musicTextView.getText().toString() != getString(R.string.music_default_text)) {
-                    ringtone_path = musicTextView.getText().toString();
-                }*/
 
                 if(dateTextView.getText().toString().compareTo(getString(R.string.date_message)) != 0){
                     repeatable_days = null;
@@ -250,8 +241,6 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
         soundSelector.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(SetAlarmSettingsActivity.this, "Sound Selector Clicked",
-                        Toast.LENGTH_LONG).show();
                 Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
                 startActivityForResult(soundSelectorIntent, 0);
             }
@@ -265,12 +254,6 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
                 SnoozeDialogFragment dialogFragment = new SnoozeDialogFragment(view);
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
                 dialogFragment.show(activity.getSupportFragmentManager(), "slider");
-                /*
-                Toast.makeText(SetAlarmSettingsActivity.this, "Sound Selector Clicked",
-                        Toast.LENGTH_LONG).show();
-                Intent soundSelectorIntent = new Intent(view.getContext() , SoundSelectorActivity.class);
-                view.getContext().startActivity(soundSelectorIntent);*/
-
             }
         });
 
@@ -460,7 +443,6 @@ public class SetAlarmSettingsActivity extends AppCompatActivity implements Snooz
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data != null) {
-            Log.d("DEBUG", "JOJO");
             String name = data.getStringExtra(AlarmListDisplayActivity.ALARM_RING_NAME);
             ringtone_path = data.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
             musicTextView.setText(name);

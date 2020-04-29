@@ -1,8 +1,7 @@
 package sjsu.android.alarmclockplusplus;
 
 
-import android.app.IntentService;
-import android.app.Notification;
+
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -13,17 +12,11 @@ import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
 
 public class AlarmRingService extends Service {
@@ -69,7 +62,6 @@ public class AlarmRingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         super.onStartCommand(intent, flags, startId);
-        Log.d("DEBUG", "SERVICE STARTED");
 
         mediaPlayer = new MediaPlayer();
         if (intent.getExtras().getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION)){
@@ -80,32 +72,24 @@ public class AlarmRingService extends Service {
             vibrator.vibrate(pattern, 0);
         }
 
-        Log.d("DEBUG", "Service started");
         if (intent.getExtras().getString(AlarmListDisplayActivity.ALARM_RING_PATH).equals("")){
-            Log.d("DEBUG", "Empty string");
             Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             this.ringtone = RingtoneManager.getRingtone(this, ringtoneUri);
             ringtone.play();
         }
         else {
-            Log.d("DEBUG", "not empty string");
             String path = intent.getStringExtra(AlarmListDisplayActivity.ALARM_RING_PATH);
-            Uri uri = MediaStore.Audio.Media.getContentUriForPath(path);
             try {
                 mediaPlayer.setDataSource(path);
                 mediaPlayer.prepare();
                 mediaPlayer.start();
                 mediaPlayer.setLooping(true);
-                Log.d("DEBUG", "MUSIC START");
             }
             catch (Exception e){
                 Toast.makeText(this, "Could not find music file", Toast.LENGTH_SHORT);
-                Log.d("DEBUG", "COULD NOT FIND MUSIC FILE");
             }
-            //this.ringtone = RingtoneManager.getRingtone(this, uri);
         }
 
-        Log.d("DEBUG", "returning");
         return START_STICKY;
     }
 
@@ -121,9 +105,8 @@ public class AlarmRingService extends Service {
         if (vibrator != null){
             vibrator.cancel();
         }
-        Log.d("DEBUG", "SERVICE STOPPED");
     }
-
+/*
     @Override
     public void onTaskRemoved(Intent rootIntent) {
         Log.d("DEBUG", "attempting to restart service");
@@ -138,5 +121,5 @@ public class AlarmRingService extends Service {
         sendBroadcast(myIntent);
         super.onTaskRemoved(rootIntent);
     }
-
+*/
 }

@@ -5,7 +5,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -104,7 +102,6 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_ON, alarm.isAlarm_on());
                 myIntent.putExtra(AlarmListDisplayActivity.ALARM_POSITION, position);
-                Log.d("DEBUG", String.valueOf(position));
 
                 ((Activity) context).startActivityForResult(myIntent, AlarmListDisplayActivity.ALARM_REQUEST_CODE);
             }
@@ -292,12 +289,8 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarm.getAlarmId());
         i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
         i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
-        //Log.d("DEBUG", alarm.getRingtonePath());
-        Log.d("DEBUG", String.valueOf(alarm.getSnoozeTime()));
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarm.getAlarmId(), i, 0);
-        Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show();
-        //alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
     }
 
     public void setRepeatTimer(Alarm alarm, int alarmSubID, int dayOfWeek){
@@ -330,7 +323,6 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, alarm.isVibration_on());
         i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, alarm.isMinigame_on());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, alarmSubID, i, 0);
-        //Toast.makeText(context, "Alarm set", Toast.LENGTH_SHORT).show();
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
     }
 }

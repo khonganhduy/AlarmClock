@@ -5,10 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -61,7 +59,6 @@ public class SnoozeActivity extends AppCompatActivity {
         cal_alarm.setTime(date);
         int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         int minutes = Calendar.getInstance().get(Calendar.MINUTE);
-        Log.d("DEBUG", "SNOOZE TIME: " + String.valueOf(myInput.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME)));
         minutes += myInput.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME);
         if (minutes > 59){
             hour += (minutes % 60);
@@ -81,14 +78,12 @@ public class SnoozeActivity extends AppCompatActivity {
         Intent i = new Intent(v.getContext(), AlarmBroadcastReceiver.class);
 
         int alarmId = myInput.getInt(AlarmListDisplayActivity.ALARM_ID);
-        Log.d("DEBUG", String.valueOf(alarmId));
         i.putExtra(AlarmListDisplayActivity.ALARM_SNOOZE_TIME, myInput.getInt(AlarmListDisplayActivity.ALARM_SNOOZE_TIME));
         i.putExtra(AlarmListDisplayActivity.ALARM_RING_PATH,  myInput.getString(AlarmListDisplayActivity.ALARM_RING_PATH));
         i.putExtra(AlarmListDisplayActivity.ALARM_VIBRATION, myInput.getBoolean(AlarmListDisplayActivity.ALARM_VIBRATION));
         i.putExtra(AlarmListDisplayActivity.ALARM_MINIGAME, myInput.getBoolean(AlarmListDisplayActivity.ALARM_MINIGAME));
         i.putExtra(AlarmListDisplayActivity.ALARM_ID, alarmId);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(v.getContext(), AlarmListDisplayActivity.SNOOZE_REQUEST_CODE, i, 0);
-        Toast.makeText(getApplicationContext(), "Alarm set", Toast.LENGTH_SHORT).show();
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal_alarm.getTimeInMillis(), pendingIntent);
     }
 }

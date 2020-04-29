@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -51,7 +50,6 @@ public class SimulationView extends View {
     }
 
     public boolean onTouchEvent(MotionEvent event){
-        Log.d("DEBUG", "SINGLE TAP UP");
         this.mDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
@@ -80,7 +78,6 @@ public class SimulationView extends View {
 
         @Override
         public boolean onDown(MotionEvent event) {
-            Log.d("DEBUG","onDown: " + event.toString());
             return true;
         }
 
@@ -89,35 +86,30 @@ public class SimulationView extends View {
                                float velocityX, float velocityY) {
             if (readingInput) {
                 boolean pass = false;
-                Log.d("DEBUG", "FLING RECORDED");
                 if (velocityX > 0 && velocityX > Math.abs(velocityY)) {
                     if (direction == Direction.RIGHT) {
                         pass = true;
                         mVelocityX = -velocityScale;
                         mVelocityY = 0;
                     }
-                    Log.d("DEBUG", "Swipe right");
                 } else if (velocityX < 0 && Math.abs(velocityX) > Math.abs(velocityY)) {
                     if (direction == Direction.LEFT) {
                         pass = true;
                         mVelocityX = velocityScale;
                         mVelocityY = 0;
                     }
-                    Log.d("DEBUG", "Swipe left");
                 } else if (velocityY > 0 && velocityY > Math.abs(velocityX)) {
                     if (direction == Direction.DOWN) {
                         pass = true;
                         mVelocityX = 0;
                         mVelocityY = velocityScale;
                     }
-                    Log.d("DEBUG", "Swipe down");
                 } else if (velocityY < 0 && Math.abs(velocityY) > Math.abs(velocityX)) {
                     if (direction == Direction.UP) {
                         pass = true;
                         mVelocityX = 0;
                         mVelocityY = -velocityScale;
                     }
-                    Log.d("DEBUG", "Swipe up");
                 }
                 if (pass) {
                     timestamp = System.currentTimeMillis() - timestamp;
@@ -133,12 +125,8 @@ public class SimulationView extends View {
                         myIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(myIntent);
                     }
-                    //direction = Direction.getRandomDirection();
-                    //tView.setText(String.valueOf(scoreTracker));
-                    //setNewImage();
                 }
             }
-            Log.d("DEBUG", "Velocity X: " + velocityX + " Velocity Y: " + velocityY);
             return true;
         }
     }
