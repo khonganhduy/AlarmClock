@@ -16,7 +16,6 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -221,6 +220,7 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         TextView daysDisplay = (TextView)holder.dateDisplay; //MAYBE CHANGE THIS LATER...
 
         if(alarm.getRepeatableDays() == null){
+            daysDisplay.setText("");
             if(alarm.getTriggerDate() != null){
                 daysDisplay.setText(alarm.getTriggerDate());
             }
@@ -232,10 +232,6 @@ public class AlarmListDisplayAdapter extends RecyclerView.Adapter<AlarmListDispl
         if (highlightedItemPosition == position){
             if (holder.mySwitch.isChecked()){
                 holder.mySwitch.setChecked(false);
-                holder.mySwitch.setChecked(true);
-            }
-            else{
-                holder.mySwitch.setChecked(true);
             }
             highlightedItemPosition = -1;
         }

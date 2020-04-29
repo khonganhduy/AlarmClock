@@ -47,6 +47,7 @@ public class SnoozeActivity extends AppCompatActivity {
                     intent.putExtra(AlarmListDisplayActivity.ALARM_ID, myInput.getInt(AlarmListDisplayActivity.ALARM_ID));
                     intent.putExtra("dismiss",true);
                 }
+                setSnoozeTimer(view);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
