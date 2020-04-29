@@ -45,7 +45,7 @@ public class SnoozeActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AlarmListDisplayActivity.class);
                 if (myInput.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS) == null){
                     intent.putExtra(AlarmListDisplayActivity.ALARM_ID, myInput.getInt(AlarmListDisplayActivity.ALARM_ID));
-                    intent.putExtra(AlarmListDisplayActivity.ALARM_REPEAT_DAYS, myInput.getString(AlarmListDisplayActivity.ALARM_REPEAT_DAYS));
+                    intent.putExtra("dismiss",true);
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
