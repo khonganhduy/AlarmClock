@@ -27,7 +27,7 @@
             android:numbersBackgroundColor="?attr/textColor"
             android:numbersInnerTextColor="?attr/textColor"
             android:theme="@style/CardView.Dark"
-            ></TimePicker>
+            />
 
         <ScrollView
             android:layout_width="match_parent"
