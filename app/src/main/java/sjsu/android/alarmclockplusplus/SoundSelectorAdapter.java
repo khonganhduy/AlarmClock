@@ -33,16 +33,11 @@ public class SoundSelectorAdapter extends RecyclerView.Adapter<SoundSelectorAdap
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public SoundSelectorAdapter(ArrayList<String> myDataset, ArrayList<String> names) {
         this.mDataset = myDataset;
         this.names = names;
     }
 
-    //public void updateData(String data, int position){
-    //  mDataset.set(position, data);
-    //notifyItemChanged(position);
-    //}
 
     // Create new views (invoked by the layout manager)
     @Override

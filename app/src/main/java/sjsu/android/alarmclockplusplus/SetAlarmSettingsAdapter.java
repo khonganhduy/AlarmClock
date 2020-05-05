@@ -47,9 +47,6 @@ public class SetAlarmSettingsAdapter extends RecyclerView.Adapter<SetAlarmSettin
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-
 
     }
 
