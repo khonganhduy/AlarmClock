@@ -137,19 +137,7 @@ public class ExampleInstrumentedTest {
         onView(withId(R.id.recyclerview)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.time_picker)).check(matches(isDisplayed()));
     }
-/*
-    @Test
-    public void testSnoozeBtnUI(){
-        onView(withId(R.id.snooze_btn)).perform(click());
-        onView(withId(R.id.textClock)).check(matches(isDisplayed()));
-    }
 
-    @Test
-    public void testDismissBtnUI(){
-        onView(withId(R.id.dismiss_btn)).perform(click());
-        onView(withId(R.id.textClock)).check(matches(isDisplayed()));
-    }
-*/
     @Test
     public void testSoundSelect(){
         closeSoftKeyboard();
@@ -166,9 +154,4 @@ public class ExampleInstrumentedTest {
 
     }
 
-    @Test
-    public void testDeleteAlarm(){
-        onView(withId(R.id.recyclerview)).perform(
-                RecyclerViewActions.actionOnItemAtPosition(0, MyViewAction.clickChildViewWithId(R.id.deleteButton)));
-    }
 }
